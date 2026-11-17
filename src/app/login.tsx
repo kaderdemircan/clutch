@@ -12,32 +12,34 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchTheme } from '@/constants/theme';
+import { useAuth } from '@/context/auth-context';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegister, setIsRegister] = useState(false);
 
   const handleLogin = () => {
-    if (!email.trim() && !password.trim()) {
-      // Allow demo bypass
-      router.replace('/(tabs)' as any);
-      return;
-    }
-    Alert.alert('Welcome!', `Logged in successfully as ${email || 'Player'}`);
+    // Allows demo bypass with random input or empty input
+    const userEmail = email.trim() || 'player@clutch.gg';
+    login(userEmail);
     router.replace('/(tabs)' as any);
   };
 
   const handleSocialLogin = (provider: 'Google' | 'Discord') => {
     Alert.alert(
-      `${provider} ile Giriş`,
-      `${provider} hesabınız ile bağlanılıyor...`,
+      `${provider} Sign-In`,
+      `Connecting to your ${provider} account...`,
       [
         {
-          text: 'Tamam',
-          onPress: () => router.replace('/(tabs)' as any),
+          text: 'Continue',
+          onPress: () => {
+            login(`${provider.toLowerCase()}_player@clutch.gg`);
+            router.replace('/(tabs)' as any);
+          },
         },
       ]
     );
@@ -59,11 +61,11 @@ export default function LoginScreen() {
         {/* Brand Header */}
         <View style={styles.brandContainer}>
           <View style={styles.logoBadge}>
-            <Ionicons name="star" size={24} color={DestinyTheme.colors.primaryDark} />
+            <Ionicons name="star" size={24} color={ClutchTheme.colors.primaryDark} />
           </View>
-          <Text style={styles.brandTitle}>DESTINY</Text>
+          <Text style={styles.brandTitle}>CLUTCH</Text>
           <Text style={styles.welcomeSubtitle}>
-            {isRegister ? 'Join the arena, player.' : 'Welcome, player.'}
+            {isRegister ? 'Join the squad, player.' : 'Welcome, player.'}
           </Text>
           <Text style={styles.mottoText}>Analyze. Adapt. Dominate.</Text>
         </View>
@@ -75,7 +77,7 @@ export default function LoginScreen() {
             onPress={() => handleSocialLogin('Google')}
             activeOpacity={0.8}>
             <Ionicons name="logo-google" size={18} color="#EA4335" />
-            <Text style={styles.socialButtonText}>Google ile devam et</Text>
+            <Text style={styles.socialButtonText}>Continue with Google</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -83,7 +85,7 @@ export default function LoginScreen() {
             onPress={() => handleSocialLogin('Discord')}
             activeOpacity={0.8}>
             <Ionicons name="logo-discord" size={18} color="#5865F2" />
-            <Text style={styles.socialButtonText}>Discord ile devam et</Text>
+            <Text style={styles.socialButtonText}>Continue with Discord</Text>
           </TouchableOpacity>
         </View>
 
@@ -102,13 +104,13 @@ export default function LoginScreen() {
               <Ionicons
                 name="mail-outline"
                 size={18}
-                color={DestinyTheme.colors.textMuted}
+                color={ClutchTheme.colors.textMuted}
                 style={styles.inputIcon}
               />
               <TextInput
                 style={styles.textInput}
-                placeholder="player@destiny.gg"
-                placeholderTextColor={DestinyTheme.colors.textMuted}
+                placeholder="player@clutch.gg"
+                placeholderTextColor={ClutchTheme.colors.textMuted}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -123,13 +125,13 @@ export default function LoginScreen() {
               <Ionicons
                 name="lock-closed-outline"
                 size={18}
-                color={DestinyTheme.colors.textMuted}
+                color={ClutchTheme.colors.textMuted}
                 style={styles.inputIcon}
               />
               <TextInput
                 style={styles.textInput}
                 placeholder="••••••••"
-                placeholderTextColor={DestinyTheme.colors.textMuted}
+                placeholderTextColor={ClutchTheme.colors.textMuted}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -140,7 +142,7 @@ export default function LoginScreen() {
           {!isRegister && (
             <TouchableOpacity
               style={styles.forgotPassButton}
-              onPress={() => Alert.alert('Reset Password', 'Password reset link sent to your email.')}>
+              onPress={() => Alert.alert('Reset Password', 'Password reset instructions have been sent to your email.')}>
               <Text style={styles.forgotPassText}>Forgot password?</Text>
             </TouchableOpacity>
           )}
@@ -164,7 +166,7 @@ export default function LoginScreen() {
                 </>
               ) : (
                 <>
-                  Don&apos;t have account? <Text style={styles.linkBold}>Register</Text>
+                  Don&apos;t have an account? <Text style={styles.linkBold}>Register</Text>
                 </>
               )}
             </Text>
@@ -178,7 +180,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   starOrnament: {
     position: 'absolute',
@@ -205,30 +207,30 @@ const styles = StyleSheet.create({
     width: 54,
     height: 54,
     borderRadius: 27,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 2,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   brandTitle: {
     fontSize: 34,
     fontWeight: '900',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 2,
   },
   welcomeSubtitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     marginTop: 4,
   },
   mottoText: {
     fontSize: 13,
     fontWeight: '600',
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     marginTop: 2,
   },
   socialButtonsContainer: {
@@ -239,18 +241,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     paddingVertical: 12,
     gap: 10,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   socialButtonText: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -261,20 +263,20 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: DestinyTheme.colors.cardBorderLight,
+    backgroundColor: ClutchTheme.colors.cardBorderLight,
   },
   dividerText: {
     fontSize: 12,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     fontWeight: '600',
   },
   formContainer: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 20,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    ...DestinyTheme.shadows.retro,
+    borderColor: ClutchTheme.colors.cardBorder,
+    ...ClutchTheme.shadows.retro,
   },
   inputGroup: {
     marginBottom: 14,
@@ -282,16 +284,16 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     marginBottom: 6,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorderLight,
-    borderRadius: DestinyTheme.radius.md,
+    borderColor: ClutchTheme.colors.cardBorderLight,
+    borderRadius: ClutchTheme.radius.md,
     paddingHorizontal: 12,
     height: 46,
   },
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 14,
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     fontWeight: '600',
   },
   forgotPassButton: {
@@ -311,19 +313,19 @@ const styles = StyleSheet.create({
   forgotPassText: {
     fontSize: 13,
     fontWeight: '700',
-    color: DestinyTheme.colors.secondary,
+    color: ClutchTheme.colors.secondary,
   },
   loginButton: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 14,
     alignItems: 'center',
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   loginButtonText: {
     fontSize: 15,
     fontWeight: '900',
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
     letterSpacing: 1,
   },
   toggleRegisterButton: {
@@ -332,11 +334,11 @@ const styles = StyleSheet.create({
   },
   toggleRegisterText: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     fontWeight: '500',
   },
   linkBold: {
     fontWeight: '800',
-    color: DestinyTheme.colors.secondary,
+    color: ClutchTheme.colors.secondary,
   },
 });

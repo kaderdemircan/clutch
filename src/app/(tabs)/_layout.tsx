@@ -1,20 +1,26 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchTheme } from '@/constants/theme';
+import { useAuth } from '@/context/auth-context';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
   const bottomPadding = Math.max(insets.bottom, 10);
+
+  if (!isAuthenticated) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: DestinyTheme.colors.primaryDark,
-        tabBarInactiveTintColor: DestinyTheme.colors.textMuted,
+        tabBarActiveTintColor: ClutchTheme.colors.primaryDark,
+        tabBarInactiveTintColor: ClutchTheme.colors.textMuted,
         tabBarStyle: [
           styles.tabBar,
           {
@@ -34,7 +40,7 @@ export default function TabLayout() {
               <Ionicons
                 name={focused ? 'home' : 'home-outline'}
                 size={22}
-                color={focused ? DestinyTheme.colors.primaryDark : (color as string)}
+                color={focused ? ClutchTheme.colors.primaryDark : (color as string)}
               />
             </View>
           ),
@@ -49,7 +55,7 @@ export default function TabLayout() {
               <Ionicons
                 name={focused ? 'people' : 'people-outline'}
                 size={23}
-                color={focused ? DestinyTheme.colors.primaryDark : (color as string)}
+                color={focused ? ClutchTheme.colors.primaryDark : (color as string)}
               />
             </View>
           ),
@@ -64,7 +70,7 @@ export default function TabLayout() {
               <Ionicons
                 name={focused ? 'trophy' : 'trophy-outline'}
                 size={22}
-                color={focused ? DestinyTheme.colors.primaryDark : (color as string)}
+                color={focused ? ClutchTheme.colors.primaryDark : (color as string)}
               />
             </View>
           ),
@@ -79,7 +85,7 @@ export default function TabLayout() {
               <Ionicons
                 name={focused ? 'person' : 'person-outline'}
                 size={22}
-                color={focused ? DestinyTheme.colors.primaryDark : (color as string)}
+                color={focused ? ClutchTheme.colors.primaryDark : (color as string)}
               />
             </View>
           ),
@@ -91,9 +97,9 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     borderTopWidth: 1.5,
-    borderTopColor: DestinyTheme.colors.cardBorderLight,
+    borderTopColor: ClutchTheme.colors.cardBorderLight,
     paddingTop: 8,
     ...Platform.select({
       ios: {
@@ -121,9 +127,9 @@ const styles = StyleSheet.create({
     height: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
   },
   activeIconContainer: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
   },
 });

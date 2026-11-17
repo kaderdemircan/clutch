@@ -8,8 +8,8 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
 
 interface NotificationItem {
   id: string;
@@ -24,7 +24,7 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
   {
     id: '1',
     category: 'invite',
-    title: 'Ahmet sent you a team invitation for "Apex Champions".',
+    title: 'Marcus sent you a team invitation for "Apex Champions".',
     time: '10 min ago',
     read: false,
     icon: 'mail-unread',
@@ -32,7 +32,7 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
   {
     id: '2',
     category: 'coach',
-    title: 'Coach Ayşe accepted your coaching session request.',
+    title: 'Coach Sarah accepted your coaching session request.',
     time: '1 hour ago',
     read: false,
     icon: 'school',
@@ -40,7 +40,7 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
   {
     id: '3',
     category: 'team',
-    title: 'Team Phoenix is looking for a Jungler for tonight scrim.',
+    title: 'Team Phoenix is looking for a Jungler for tonight\'s scrim.',
     time: '3 hours ago',
     read: true,
     icon: 'people',
@@ -56,7 +56,7 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
   {
     id: '5',
     category: 'team',
-    title: 'Your team invites you to play tournament qualifier match.',
+    title: 'Your team invited you to play the tournament qualifier match.',
     time: '2 days ago',
     read: true,
     icon: 'game-controller',
@@ -64,7 +64,7 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
   {
     id: '6',
     category: 'other',
-    title: 'Your Destiny player profile has been verified and created.',
+    title: 'Your Clutch player profile has been verified and created.',
     time: '3 days ago',
     read: true,
     icon: 'shield-checkmark',
@@ -93,7 +93,7 @@ export default function NotificationsScreen() {
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="NOTIFICATIONS"
         showBack={true}
         showSearch={false}
@@ -148,7 +148,7 @@ export default function NotificationsScreen() {
                   name={item.icon as any}
                   size={20}
                   color={
-                    !item.read ? DestinyTheme.colors.primaryDark : DestinyTheme.colors.textMuted
+                    !item.read ? ClutchTheme.colors.primaryDark : ClutchTheme.colors.textMuted
                   }
                 />
               </View>
@@ -173,19 +173,19 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   filterSection: {
-    backgroundColor: DestinyTheme.colors.card,
+    backgroundColor: ClutchTheme.colors.card,
     paddingTop: 8,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
   },
   filterTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1,
     marginHorizontal: 16,
     marginBottom: 8,
@@ -195,25 +195,25 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   filterChip: {
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     paddingHorizontal: 16,
     paddingVertical: 7,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    ...DestinyTheme.shadows.subtle,
+    borderColor: ClutchTheme.colors.cardBorder,
+    ...ClutchTheme.shadows.subtle,
   },
   filterChipActive: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderColor: DestinyTheme.colors.primaryDark,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
   },
   filterChipText: {
     fontSize: 13,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   filterChipTextActive: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
   },
   scrollContent: {
     padding: 16,
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
   allNotifTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   markReadText: {
     fontSize: 12,
     fontWeight: '700',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   notificationsContainer: {
     gap: 10,
@@ -241,46 +241,46 @@ const styles = StyleSheet.create({
   notifCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.lg,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.lg,
     padding: 14,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    ...DestinyTheme.shadows.subtle,
+    borderColor: ClutchTheme.colors.cardBorder,
+    ...ClutchTheme.shadows.subtle,
   },
   notifCardUnread: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
   },
   iconCircle: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
   iconCircleUnread: {
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
   },
   notifContent: {
     flex: 1,
   },
   notifText: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     lineHeight: 18,
     fontWeight: '500',
   },
   notifTextUnread: {
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   timeText: {
     fontSize: 11,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     marginTop: 4,
     fontWeight: '600',
   },
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     width: 9,
     height: 9,
     borderRadius: 4.5,
-    backgroundColor: DestinyTheme.colors.primaryDark,
+    backgroundColor: ClutchTheme.colors.primaryDark,
     marginLeft: 8,
   },
 });

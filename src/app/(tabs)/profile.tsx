@@ -8,15 +8,19 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
+import { useAuth } from '@/context/auth-context';
 
 export default function ProfileScreen() {
+  const { user } = useAuth();
+  const displayName = user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Kader';
+
   const menuItems = [
     {
       id: 'edit',
       title: 'Edit Profile',
-      subtitle: 'Change player card, main role & hero',
+      subtitle: 'Change player card, main role & favorite hero',
       icon: 'person-outline',
       onPress: () => router.push('/player-info'),
     },
@@ -59,7 +63,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="PROFILE"
         showSearch={false}
       />
@@ -67,15 +71,17 @@ export default function ProfileScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        {/* Player ID Card from Screen 7 */}
+        {/* Player ID Card */}
         <View style={styles.playerCard}>
           <View style={styles.playerCardHeader}>
             <View style={styles.avatarLarge}>
-              <Text style={styles.avatarLargeInitial}>K</Text>
+              <Text style={styles.avatarLargeInitial}>
+                {displayName.charAt(0)}
+              </Text>
             </View>
             <View style={styles.playerInfoBox}>
               <View style={styles.nameRow}>
-                <Text style={styles.playerName}>Kader</Text>
+                <Text style={styles.playerName}>{displayName}</Text>
                 <View style={styles.rankBadge}>
                   <Text style={styles.rankBadgeText}>MYTHIC IMMORTAL</Text>
                 </View>
@@ -93,14 +99,14 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statCol}>
-              <Text style={[styles.statNumber, { color: DestinyTheme.colors.primaryDark }]}>
-                %61
+              <Text style={[styles.statNumber, { color: ClutchTheme.colors.primaryDark }]}>
+                61%
               </Text>
               <Text style={styles.statCaption}>Win Rate</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statCol}>
-              <Text style={[styles.statNumber, { color: DestinyTheme.colors.gold }]}>92</Text>
+              <Text style={[styles.statNumber, { color: ClutchTheme.colors.gold }]}>92</Text>
               <Text style={styles.statCaption}>MVP Award</Text>
             </View>
           </View>
@@ -111,7 +117,7 @@ export default function ProfileScreen() {
             <View style={styles.heroChipsRow}>
               {['Benedetta', 'Chou', 'Paquito'].map((hero) => (
                 <View key={hero} style={styles.heroChip}>
-                  <Ionicons name="shield-checkmark" size={12} color={DestinyTheme.colors.primaryDark} />
+                  <Ionicons name="shield-checkmark" size={12} color={ClutchTheme.colors.primaryDark} />
                   <Text style={styles.heroChipText}>{hero}</Text>
                 </View>
               ))}
@@ -153,7 +159,7 @@ export default function ProfileScreen() {
                 <Ionicons
                   name={item.icon as any}
                   size={20}
-                  color={DestinyTheme.colors.primaryDark}
+                  color={ClutchTheme.colors.primaryDark}
                 />
               </View>
               <View style={styles.menuTextBox}>
@@ -163,7 +169,7 @@ export default function ProfileScreen() {
               <Ionicons
                 name="chevron-forward"
                 size={18}
-                color={DestinyTheme.colors.textMuted}
+                color={ClutchTheme.colors.textMuted}
               />
             </TouchableOpacity>
           ))}
@@ -176,20 +182,20 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   scrollContent: {
     padding: 16,
     paddingBottom: 36,
   },
   playerCard: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 18,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     marginBottom: 24,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   playerCardHeader: {
     flexDirection: 'row',
@@ -200,18 +206,18 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 2,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   avatarLargeInitial: {
     fontSize: 28,
     fontWeight: '900',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   playerInfoBox: {
     flex: 1,
@@ -225,36 +231,36 @@ const styles = StyleSheet.create({
   playerName: {
     fontSize: 20,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   rankBadge: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
   },
   rankBadgeText: {
     fontSize: 9,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   gameDetailText: {
     fontSize: 12,
     fontWeight: '600',
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     marginBottom: 2,
   },
   teamBadgeText: {
     fontSize: 12,
     fontWeight: '700',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   statsBar: {
     flexDirection: 'row',
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
-    borderRadius: DestinyTheme.radius.md,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
+    borderRadius: ClutchTheme.radius.md,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -266,18 +272,18 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 18,
     fontWeight: '900',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   statCaption: {
     fontSize: 11,
     fontWeight: '600',
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     marginTop: 2,
   },
   statDivider: {
     width: 1,
     height: 24,
-    backgroundColor: DestinyTheme.colors.cardBorderLight,
+    backgroundColor: ClutchTheme.colors.cardBorderLight,
   },
   heroesSection: {
     marginBottom: 16,
@@ -285,7 +291,7 @@ const styles = StyleSheet.create({
   heroesTitle: {
     fontSize: 12,
     fontWeight: '700',
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     marginBottom: 6,
   },
   heroChipsRow: {
@@ -295,18 +301,18 @@ const styles = StyleSheet.create({
   heroChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     gap: 4,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorderLight,
+    borderColor: ClutchTheme.colors.cardBorderLight,
   },
   heroChipText: {
     fontSize: 12,
     fontWeight: '700',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   cardActionsRow: {
     flexDirection: 'row',
@@ -316,41 +322,41 @@ const styles = StyleSheet.create({
   cardSecondaryBtn: {
     paddingVertical: 9,
     paddingHorizontal: 16,
-    borderRadius: DestinyTheme.radius.pill,
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
+    borderRadius: ClutchTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorderLight,
+    borderColor: ClutchTheme.colors.cardBorderLight,
   },
   cardSecondaryBtnText: {
     fontSize: 12,
     fontWeight: '700',
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
   },
   cardPrimaryBtn: {
     paddingVertical: 9,
     paddingHorizontal: 18,
-    borderRadius: DestinyTheme.radius.pill,
-    backgroundColor: DestinyTheme.colors.primaryDark,
+    borderRadius: ClutchTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.primaryDark,
   },
   cardPrimaryBtnText: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
   },
   menuTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 0.8,
     marginBottom: 12,
   },
   menuContainer: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     overflow: 'hidden',
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   menuItem: {
     flexDirection: 'row',
@@ -358,7 +364,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
   },
   menuItemLast: {
     borderBottomWidth: 0,
@@ -367,7 +373,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
@@ -378,11 +384,11 @@ const styles = StyleSheet.create({
   menuItemTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   menuItemSubtitle: {
     fontSize: 12,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     marginTop: 2,
   },
 });

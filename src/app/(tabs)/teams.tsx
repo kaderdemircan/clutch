@@ -10,8 +10,8 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
 
 interface TeamItem {
   id: string;
@@ -93,7 +93,7 @@ export default function TeamsScreen() {
         {
           text: 'Apply',
           onPress: () =>
-            Alert.alert('Application Sent!', `Your application was sent to ${team.name}.`),
+            Alert.alert('Application Sent!', `Your application has been delivered to ${team.name}.`),
         },
       ]
     );
@@ -101,7 +101,7 @@ export default function TeamsScreen() {
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="FIND A TEAM"
         showSearch={true}
         searchPlaceholder="Search team name or role..."
@@ -132,7 +132,7 @@ export default function TeamsScreen() {
                   name="chevron-down"
                   size={12}
                   color={
-                    isSelected ? DestinyTheme.colors.white : DestinyTheme.colors.primaryDark
+                    isSelected ? ClutchTheme.colors.white : ClutchTheme.colors.primaryDark
                   }
                 />
               </TouchableOpacity>
@@ -155,19 +155,19 @@ export default function TeamsScreen() {
           <View key={team.id} style={styles.teamCard}>
             <View style={styles.cardHeader}>
               <View style={styles.teamAvatar}>
-                <Ionicons name="shield" size={24} color={DestinyTheme.colors.primaryDark} />
+                <Ionicons name="shield" size={24} color={ClutchTheme.colors.primaryDark} />
               </View>
               <View style={styles.teamTitleBox}>
                 <Text style={styles.teamName}>{team.name}</Text>
                 <View style={styles.ratingRow}>
                   {Array.from({ length: team.rating }).map((_, i) => (
-                    <Ionicons key={i} name="star" size={14} color={DestinyTheme.colors.gold} />
+                    <Ionicons key={i} name="star" size={14} color={ClutchTheme.colors.gold} />
                   ))}
                   <Text style={styles.tagText}>• {team.tag}</Text>
                 </View>
               </View>
               <View style={styles.membersBadge}>
-                <Ionicons name="people" size={12} color={DestinyTheme.colors.primaryDark} />
+                <Ionicons name="people" size={12} color={ClutchTheme.colors.primaryDark} />
                 <Text style={styles.membersText}>{team.members}</Text>
               </View>
             </View>
@@ -195,7 +195,7 @@ export default function TeamsScreen() {
                 onPress={() => handleJoinTeam(team)}
                 activeOpacity={0.8}>
                 <Text style={styles.joinButtonText}>Apply to Team</Text>
-                <Ionicons name="arrow-forward" size={15} color={DestinyTheme.colors.white} />
+                <Ionicons name="arrow-forward" size={15} color={ClutchTheme.colors.white} />
               </TouchableOpacity>
             </View>
           </View>
@@ -208,19 +208,19 @@ export default function TeamsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   filterSection: {
-    backgroundColor: DestinyTheme.colors.card,
+    backgroundColor: ClutchTheme.colors.card,
     paddingTop: 8,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
   },
   filterTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1,
     marginHorizontal: 16,
     marginBottom: 8,
@@ -232,26 +232,26 @@ const styles = StyleSheet.create({
   filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     paddingHorizontal: 12,
     paddingVertical: 7,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     gap: 6,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   filterChipActive: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderColor: DestinyTheme.colors.primaryDark,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
   },
   filterChipText: {
     fontSize: 13,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   filterChipTextActive: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
   },
   scrollContent: {
     padding: 16,
@@ -266,21 +266,21 @@ const styles = StyleSheet.create({
   recommendedTitle: {
     fontSize: 16,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   myTeamLink: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   teamCard: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 18,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     marginBottom: 16,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -291,9 +291,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   teamName: {
     fontSize: 17,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     letterSpacing: 0.5,
   },
   ratingRow: {
@@ -315,27 +315,27 @@ const styles = StyleSheet.create({
   },
   tagText: {
     fontSize: 11,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     fontWeight: '600',
     marginLeft: 4,
   },
   membersBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     gap: 4,
   },
   membersText: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   infoBox: {
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
-    borderRadius: DestinyTheme.radius.md,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
+    borderRadius: ClutchTheme.radius.md,
     padding: 10,
     gap: 6,
     marginBottom: 10,
@@ -347,18 +347,18 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     fontWeight: '600',
   },
   infoValue: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   roleBadge: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 6,
@@ -366,11 +366,11 @@ const styles = StyleSheet.create({
   roleBadgeText: {
     fontSize: 11,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   descriptionText: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     lineHeight: 18,
     marginBottom: 14,
   },
@@ -381,15 +381,15 @@ const styles = StyleSheet.create({
   joinButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 10,
     paddingHorizontal: 18,
     gap: 6,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   joinButtonText: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
     fontSize: 13,
     fontWeight: '800',
   },

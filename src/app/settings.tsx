@@ -11,37 +11,36 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
+import { useAuth } from '@/context/auth-context';
 
 export default function SettingsScreen() {
+  const { logout } = useAuth();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
-  const [language, setLanguage] = useState<'TR' | 'EN'>('TR');
 
   const handleLogout = () => {
     Alert.alert(
       'Log Out',
-      'Are you sure you want to log out of DESTINY?',
+      'Are you sure you want to log out of CLUTCH?',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Log Out',
           style: 'destructive',
-          onPress: () => router.replace('/login'),
+          onPress: () => {
+            logout();
+            router.replace('/login');
+          },
         },
       ]
     );
   };
 
-  const handleToggleLanguage = () => {
-    setLanguage((prev) => (prev === 'TR' ? 'EN' : 'TR'));
-    Alert.alert('Language', `Language switched to ${language === 'TR' ? 'English' : 'Türkçe'}`);
-  };
-
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="SETTINGS"
         showBack={true}
         showSearch={false}
@@ -54,19 +53,17 @@ export default function SettingsScreen() {
           {/* Language */}
           <TouchableOpacity
             style={styles.settingRow}
-            onPress={handleToggleLanguage}
+            onPress={() => Alert.alert('Language', 'Default app language is English (EN).')}
             activeOpacity={0.7}>
             <View style={styles.iconCircle}>
-              <Ionicons name="globe-outline" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="globe-outline" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <View style={styles.settingTextBox}>
               <Text style={styles.settingTitle}>Language</Text>
-              <Text style={styles.settingDesc}>
-                Current: {language === 'TR' ? 'Türkçe (TR)' : 'English (EN)'}
-              </Text>
+              <Text style={styles.settingDesc}>English (US)</Text>
             </View>
             <View style={styles.langPill}>
-              <Text style={styles.langPillText}>{language}</Text>
+              <Text style={styles.langPillText}>EN</Text>
             </View>
           </TouchableOpacity>
 
@@ -76,7 +73,7 @@ export default function SettingsScreen() {
               <Ionicons
                 name="notifications-outline"
                 size={20}
-                color={DestinyTheme.colors.primaryDark}
+                color={ClutchTheme.colors.primaryDark}
               />
             </View>
             <View style={styles.settingTextBox}>
@@ -88,75 +85,75 @@ export default function SettingsScreen() {
               onValueChange={setNotificationsEnabled}
               trackColor={{
                 false: '#E0E0E0',
-                true: DestinyTheme.colors.primaryDark,
+                true: ClutchTheme.colors.primaryDark,
               }}
-              thumbColor={DestinyTheme.colors.white}
+              thumbColor={ClutchTheme.colors.white}
             />
           </View>
 
           {/* Dark Mode */}
           <View style={styles.settingRow}>
             <View style={styles.iconCircle}>
-              <Ionicons name="moon-outline" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="moon-outline" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <View style={styles.settingTextBox}>
               <Text style={styles.settingTitle}>Dark Mode</Text>
-              <Text style={styles.settingDesc}>Night friendly theme for gaming</Text>
+              <Text style={styles.settingDesc}>Night-friendly theme for gaming</Text>
             </View>
             <Switch
               value={darkModeEnabled}
               onValueChange={setDarkModeEnabled}
               trackColor={{
                 false: '#E0E0E0',
-                true: DestinyTheme.colors.primaryDark,
+                true: ClutchTheme.colors.primaryDark,
               }}
-              thumbColor={DestinyTheme.colors.white}
+              thumbColor={ClutchTheme.colors.white}
             />
           </View>
 
           {/* Privacy */}
           <TouchableOpacity
             style={styles.settingRow}
-            onPress={() => Alert.alert('Privacy', 'Your match records and stats are protected.')}
+            onPress={() => Alert.alert('Privacy', 'Your match records and stats are protected under Clutch Privacy Policy.')}
             activeOpacity={0.7}>
             <View style={styles.iconCircle}>
-              <Ionicons name="lock-closed-outline" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="lock-closed-outline" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <View style={styles.settingTextBox}>
-              <Text style={styles.settingTitle}>Privacy</Text>
-              <Text style={styles.settingDesc}>Profile visibility & party permissions</Text>
+              <Text style={styles.settingTitle}>Privacy & Security</Text>
+              <Text style={styles.settingDesc}>Profile visibility & squad permissions</Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={DestinyTheme.colors.textMuted} />
+            <Ionicons name="chevron-forward" size={18} color={ClutchTheme.colors.textMuted} />
           </TouchableOpacity>
 
           {/* Terms of Service */}
           <TouchableOpacity
             style={styles.settingRow}
-            onPress={() => Alert.alert('Terms of Service', 'Destiny Esports Platform Rules.')}
+            onPress={() => Alert.alert('Terms of Service', 'Clutch Esports Platform Rules and fair-play guidelines.')}
             activeOpacity={0.7}>
             <View style={styles.iconCircle}>
-              <Ionicons name="document-text-outline" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="document-text-outline" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <View style={styles.settingTextBox}>
               <Text style={styles.settingTitle}>Terms of Service</Text>
-              <Text style={styles.settingDesc}>Fair-play & tournament guidelines</Text>
+              <Text style={styles.settingDesc}>Tournament rules & community conduct</Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={DestinyTheme.colors.textMuted} />
+            <Ionicons name="chevron-forward" size={18} color={ClutchTheme.colors.textMuted} />
           </TouchableOpacity>
 
           {/* Help & Support */}
           <TouchableOpacity
             style={[styles.settingRow, styles.settingRowLast]}
-            onPress={() => Alert.alert('Help & Support', 'Reach out via discord or support ticket.')}
+            onPress={() => Alert.alert('Help & Support', 'Contact us via Discord or support ticket at support@clutch.gg.')}
             activeOpacity={0.7}>
             <View style={styles.iconCircle}>
-              <Ionicons name="help-circle-outline" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="help-circle-outline" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <View style={styles.settingTextBox}>
               <Text style={styles.settingTitle}>Help & Support</Text>
-              <Text style={styles.settingDesc}>FAQ, bug reports and contact</Text>
+              <Text style={styles.settingDesc}>FAQ, bug reports, and contact team</Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={DestinyTheme.colors.textMuted} />
+            <Ionicons name="chevron-forward" size={18} color={ClutchTheme.colors.textMuted} />
           </TouchableOpacity>
         </View>
 
@@ -165,7 +162,7 @@ export default function SettingsScreen() {
           style={styles.logoutButton}
           onPress={handleLogout}
           activeOpacity={0.8}>
-          <Ionicons name="log-out-outline" size={18} color={DestinyTheme.colors.danger} />
+          <Ionicons name="log-out-outline" size={18} color={ClutchTheme.colors.danger} />
           <Text style={styles.logoutButtonText}>Log out →</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -176,20 +173,20 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   scrollContent: {
     padding: 16,
     paddingBottom: 36,
   },
   settingsCard: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     overflow: 'hidden',
     marginBottom: 20,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   settingRow: {
     flexDirection: 'row',
@@ -197,7 +194,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
   },
   settingRowLast: {
     borderBottomWidth: 0,
@@ -206,7 +203,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
@@ -217,42 +214,42 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 15,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   settingDesc: {
     fontSize: 12,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     marginTop: 2,
   },
   langPill: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
   },
   langPillText: {
     fontSize: 11,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.danger,
+    borderColor: ClutchTheme.colors.danger,
     paddingVertical: 14,
     gap: 8,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   logoutButtonText: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.danger,
+    color: ClutchTheme.colors.danger,
     letterSpacing: 0.5,
   },
 });

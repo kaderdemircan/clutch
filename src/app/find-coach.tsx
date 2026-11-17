@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
 
 interface CoachItem {
   id: string;
@@ -26,7 +26,7 @@ interface CoachItem {
 const COACHES_DATA: CoachItem[] = [
   {
     id: '1',
-    name: 'Coach Ayşe',
+    name: 'Coach Sarah',
     game: 'MLBB',
     experience: '4 years',
     fee: 'Free (First session)',
@@ -36,17 +36,17 @@ const COACHES_DATA: CoachItem[] = [
   },
   {
     id: '2',
-    name: 'Coach Kerem',
+    name: 'Coach Marcus',
     game: 'MLBB',
     experience: '6 years',
-    fee: '150₺ / session',
+    fee: '$15 / session',
     rating: 5,
     specialty: 'Jungler Retribution & Fast Farming',
     description: 'Specializes in jungle paths, objective control and teamfight shotcalling.',
   },
   {
     id: '3',
-    name: 'Coach Eren',
+    name: 'Coach Alex',
     game: 'MLBB',
     experience: '5 years',
     fee: 'Free',
@@ -92,7 +92,7 @@ export default function FindCoachScreen() {
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="FIND A COACH"
         showBack={true}
         showSearch={true}
@@ -124,7 +124,7 @@ export default function FindCoachScreen() {
                   name="chevron-down"
                   size={12}
                   color={
-                    isSelected ? DestinyTheme.colors.white : DestinyTheme.colors.primaryDark
+                    isSelected ? ClutchTheme.colors.white : ClutchTheme.colors.primaryDark
                   }
                 />
               </TouchableOpacity>
@@ -144,13 +144,13 @@ export default function FindCoachScreen() {
           <View key={coach.id} style={styles.coachCard}>
             <View style={styles.cardHeader}>
               <View style={styles.coachAvatar}>
-                <Ionicons name="school" size={24} color={DestinyTheme.colors.primaryDark} />
+                <Ionicons name="school" size={24} color={ClutchTheme.colors.primaryDark} />
               </View>
               <View style={styles.titleBox}>
                 <Text style={styles.coachName}>{coach.name}</Text>
                 <View style={styles.ratingRow}>
                   {Array.from({ length: coach.rating }).map((_, i) => (
-                    <Ionicons key={i} name="star" size={13} color={DestinyTheme.colors.gold} />
+                    <Ionicons key={i} name="star" size={13} color={ClutchTheme.colors.gold} />
                   ))}
                   <Text style={styles.gameTag}>• {coach.game}</Text>
                 </View>
@@ -164,7 +164,7 @@ export default function FindCoachScreen() {
               </View>
               <View style={styles.infoRow}>
                 <Text style={styles.infoLabel}>Session Fee:</Text>
-                <Text style={[styles.infoValue, { color: DestinyTheme.colors.primaryDark }]}>
+                <Text style={[styles.infoValue, { color: ClutchTheme.colors.primaryDark }]}>
                   {coach.fee}
                 </Text>
               </View>
@@ -194,19 +194,19 @@ export default function FindCoachScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   filterSection: {
-    backgroundColor: DestinyTheme.colors.card,
+    backgroundColor: ClutchTheme.colors.card,
     paddingTop: 8,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
   },
   filterTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1,
     marginHorizontal: 16,
     marginBottom: 8,
@@ -218,26 +218,26 @@ const styles = StyleSheet.create({
   filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     paddingHorizontal: 12,
     paddingVertical: 7,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     gap: 6,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   filterChipActive: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderColor: DestinyTheme.colors.primaryDark,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
   },
   filterChipText: {
     fontSize: 13,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   filterChipTextActive: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
   },
   scrollContent: {
     padding: 16,
@@ -246,17 +246,17 @@ const styles = StyleSheet.create({
   recommendedTitle: {
     fontSize: 16,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     marginBottom: 14,
   },
   coachCard: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 18,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     marginBottom: 16,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -267,9 +267,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   coachName: {
     fontSize: 17,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   ratingRow: {
     flexDirection: 'row',
@@ -290,13 +290,13 @@ const styles = StyleSheet.create({
   },
   gameTag: {
     fontSize: 11,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     fontWeight: '600',
     marginLeft: 4,
   },
   infoBox: {
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
-    borderRadius: DestinyTheme.radius.md,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
+    borderRadius: ClutchTheme.radius.md,
     padding: 12,
     gap: 6,
     marginBottom: 10,
@@ -308,17 +308,17 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     fontWeight: '600',
   },
   infoValue: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   descriptionText: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     lineHeight: 18,
     marginBottom: 14,
   },
@@ -327,14 +327,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   inviteButton: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 10,
     paddingHorizontal: 22,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   inviteButtonText: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
     fontSize: 13,
     fontWeight: '800',
   },

@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
 
 interface MatchData {
   id: string;
@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="PLAYER NAME"
         showSearch={true}
         searchPlaceholder="Search heroes, players, teams..."
@@ -52,7 +52,7 @@ export default function HomeScreen() {
             <Text style={styles.gameBadgeText}>RECENTLY PLAYED</Text>
           </View>
           <Text style={styles.gameTitle}>Mobile Legends: Bang Bang</Text>
-          <Text style={styles.gameSubtitle}>Rank: Mythic Immortal • Server TR</Text>
+          <Text style={styles.gameSubtitle}>Rank: Mythic Immortal • Global Server</Text>
         </View>
 
         {/* Last Four Matches Section */}
@@ -80,7 +80,7 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.kdaRow}>
-                <Ionicons name="flash" size={13} color={DestinyTheme.colors.primaryDark} />
+                <Ionicons name="flash" size={13} color={ClutchTheme.colors.primaryDark} />
                 <Text style={styles.kdaText}>{match.kda}</Text>
               </View>
 
@@ -138,10 +138,10 @@ export default function HomeScreen() {
             onPress={() => router.push('/teams')}
             activeOpacity={0.8}>
             <View style={styles.actionIconCircle}>
-              <Ionicons name="people" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="people" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <Text style={styles.actionButtonText}>Find a team</Text>
-            <Ionicons name="arrow-forward" size={16} color={DestinyTheme.colors.primaryDark} />
+            <Ionicons name="arrow-forward" size={16} color={ClutchTheme.colors.primaryDark} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -149,10 +149,10 @@ export default function HomeScreen() {
             onPress={() => router.push('/find-coach')}
             activeOpacity={0.8}>
             <View style={styles.actionIconCircle}>
-              <Ionicons name="school" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="school" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <Text style={styles.actionButtonText}>Find a coach</Text>
-            <Ionicons name="arrow-forward" size={16} color={DestinyTheme.colors.primaryDark} />
+            <Ionicons name="arrow-forward" size={16} color={ClutchTheme.colors.primaryDark} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -160,10 +160,10 @@ export default function HomeScreen() {
             onPress={() => router.push('/my-team')}
             activeOpacity={0.8}>
             <View style={styles.actionIconCircle}>
-              <Ionicons name="shield-checkmark" size={20} color={DestinyTheme.colors.primaryDark} />
+              <Ionicons name="shield-checkmark" size={20} color={ClutchTheme.colors.primaryDark} />
             </View>
             <Text style={styles.actionButtonText}>My team</Text>
-            <Ionicons name="arrow-forward" size={16} color={DestinyTheme.colors.primaryDark} />
+            <Ionicons name="arrow-forward" size={16} color={ClutchTheme.colors.primaryDark} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -174,20 +174,20 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   scrollContent: {
     padding: 16,
     paddingBottom: 32,
   },
   gameBanner: {
-    backgroundColor: DestinyTheme.colors.card,
-    borderRadius: DestinyTheme.radius.lg,
+    backgroundColor: ClutchTheme.colors.card,
+    borderRadius: ClutchTheme.radius.lg,
     padding: 16,
     marginBottom: 20,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorderLight,
-    ...DestinyTheme.shadows.subtle,
+    borderColor: ClutchTheme.colors.cardBorderLight,
+    ...ClutchTheme.shadows.subtle,
   },
   gameBadge: {
     flexDirection: 'row',
@@ -196,23 +196,23 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   gameBadgeDot: {
-    color: DestinyTheme.colors.success,
+    color: ClutchTheme.colors.success,
     fontSize: 12,
   },
   gameBadgeText: {
     fontSize: 11,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1,
   },
   gameTitle: {
     fontSize: 20,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   gameSubtitle: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     marginTop: 2,
     fontWeight: '600',
   },
@@ -225,21 +225,21 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1.2,
   },
   sectionBadge: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorderLight,
+    borderColor: ClutchTheme.colors.cardBorderLight,
   },
   sectionBadgeText: {
     fontSize: 11,
     fontWeight: '700',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   matchGrid: {
     flexDirection: 'row',
@@ -249,12 +249,12 @@ const styles = StyleSheet.create({
   },
   matchCard: {
     width: '48%',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.md,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.md,
     padding: 12,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    ...DestinyTheme.shadows.retro,
+    borderColor: ClutchTheme.colors.cardBorder,
+    ...ClutchTheme.shadows.retro,
   },
   matchCardTop: {
     flexDirection: 'row',
@@ -265,16 +265,16 @@ const styles = StyleSheet.create({
   heroName: {
     fontSize: 15,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   mvpBadge: {
-    backgroundColor: DestinyTheme.colors.gold,
+    backgroundColor: ClutchTheme.colors.gold,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 6,
   },
   mvpText: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
     fontSize: 9,
     fontWeight: '900',
   },
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   resultText: {
-    color: DestinyTheme.colors.success,
+    color: ClutchTheme.colors.success,
     fontSize: 11,
     fontWeight: '800',
   },
@@ -300,22 +300,22 @@ const styles = StyleSheet.create({
   kdaText: {
     fontSize: 13,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   roleText: {
     fontSize: 11,
     fontWeight: '600',
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
   },
   statsCard: {
     flexDirection: 'row',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 18,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     marginBottom: 24,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   statsLeft: {
     flex: 1,
@@ -330,16 +330,16 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
   },
   statValue: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   statsDivider: {
     width: 1.5,
-    backgroundColor: DestinyTheme.colors.cardBorderLight,
+    backgroundColor: ClutchTheme.colors.cardBorderLight,
     marginHorizontal: 8,
   },
   statsRight: {
@@ -350,15 +350,15 @@ const styles = StyleSheet.create({
   overallStatsTitle: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1,
     marginBottom: 6,
   },
   statHighlightBadge: {
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    borderRadius: DestinyTheme.radius.md,
+    borderColor: ClutchTheme.colors.cardBorder,
+    borderRadius: ClutchTheme.radius.md,
     paddingVertical: 6,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -367,12 +367,12 @@ const styles = StyleSheet.create({
   statHighlightValue: {
     fontSize: 22,
     fontWeight: '900',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   statHighlightLabel: {
     fontSize: 9,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 0.8,
   },
   subStatsRow: {
@@ -385,11 +385,11 @@ const styles = StyleSheet.create({
   miniStatNum: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   miniStatLabel: {
     fontSize: 10,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     fontWeight: '600',
   },
   actionButtonsContainer: {
@@ -398,19 +398,19 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.white,
+    backgroundColor: ClutchTheme.colors.white,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    borderRadius: DestinyTheme.radius.pill,
+    borderColor: ClutchTheme.colors.cardBorder,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 14,
     paddingHorizontal: 20,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   actionIconCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     letterSpacing: 0.5,
   },
 });

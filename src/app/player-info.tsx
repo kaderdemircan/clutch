@@ -9,17 +9,21 @@ import {
   View,
 } from 'react-native';
 
-import { DestinyHeader } from '@/components/destiny/header';
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchHeader } from '@/components/clutch/header';
+import { ClutchTheme } from '@/constants/theme';
+import { useAuth } from '@/context/auth-context';
 
 export default function PlayerInfoScreen() {
+  const { user } = useAuth();
+  const displayName = user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Kader';
+
   const handleEditProfile = () => {
-    Alert.alert('Edit Profile', 'Profile editing options will be available soon.');
+    Alert.alert('Edit Profile', 'Profile customizer will be unlocked in the next update.');
   };
 
   return (
     <View style={styles.container}>
-      <DestinyHeader
+      <ClutchHeader
         title="INFORMATION"
         showBack={true}
         showSearch={false}
@@ -32,14 +36,16 @@ export default function PlayerInfoScreen() {
         <View style={styles.infoCard}>
           <View style={styles.cardTop}>
             <View style={styles.avatarLarge}>
-              <Text style={styles.avatarLargeInitial}>K</Text>
+              <Text style={styles.avatarLargeInitial}>
+                {displayName.charAt(0)}
+              </Text>
             </View>
             <View style={styles.titleBox}>
-              <Text style={styles.brandTitle}>DESTINY PLAYER</Text>
-              <Text style={styles.playerName}>Kader</Text>
+              <Text style={styles.brandTitle}>CLUTCH PLAYER</Text>
+              <Text style={styles.playerName}>{displayName}</Text>
               <View style={styles.badgeRow}>
                 <View style={styles.verifiedBadge}>
-                  <Ionicons name="checkmark-circle" size={14} color={DestinyTheme.colors.success} />
+                  <Ionicons name="checkmark-circle" size={14} color={ClutchTheme.colors.success} />
                   <Text style={styles.verifiedText}>Verified Competitor</Text>
                 </View>
               </View>
@@ -58,7 +64,7 @@ export default function PlayerInfoScreen() {
             <View style={styles.dataRow}>
               <Text style={styles.dataLabel}>Rank:</Text>
               <View style={styles.rankPill}>
-                <Ionicons name="sparkles" size={13} color={DestinyTheme.colors.primaryDark} />
+                <Ionicons name="sparkles" size={13} color={ClutchTheme.colors.primaryDark} />
                 <Text style={styles.rankPillText}>Mythic Immortal (124 Stars)</Text>
               </View>
             </View>
@@ -75,14 +81,14 @@ export default function PlayerInfoScreen() {
 
             <View style={styles.dataRow}>
               <Text style={styles.dataLabel}>Win Rate:</Text>
-              <Text style={[styles.dataValueBold, { color: DestinyTheme.colors.primaryDark }]}>
-                %61.4
+              <Text style={[styles.dataValueBold, { color: ClutchTheme.colors.primaryDark }]}>
+                61.4%
               </Text>
             </View>
 
             <View style={styles.dataRow}>
               <Text style={styles.dataLabel}>MVP Awards:</Text>
-              <Text style={[styles.dataValueBold, { color: DestinyTheme.colors.gold }]}>
+              <Text style={[styles.dataValueBold, { color: ClutchTheme.colors.gold }]}>
                 92 Times
               </Text>
             </View>
@@ -105,7 +111,7 @@ export default function PlayerInfoScreen() {
                 { name: 'Paquito', wr: '59%', matches: '86 M' },
               ].map((hero) => (
                 <View key={hero.name} style={styles.heroCard}>
-                  <Ionicons name="shield" size={18} color={DestinyTheme.colors.primaryDark} />
+                  <Ionicons name="shield" size={18} color={ClutchTheme.colors.primaryDark} />
                   <Text style={styles.heroName}>{hero.name}</Text>
                   <Text style={styles.heroStats}>
                     {hero.wr} • {hero.matches}
@@ -140,19 +146,19 @@ export default function PlayerInfoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.background,
+    backgroundColor: ClutchTheme.colors.background,
   },
   scrollContent: {
     padding: 16,
     paddingBottom: 36,
   },
   infoCard: {
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.xl,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.xl,
     padding: 20,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    ...DestinyTheme.shadows.retro,
+    borderColor: ClutchTheme.colors.cardBorder,
+    ...ClutchTheme.shadows.retro,
   },
   cardTop: {
     flexDirection: 'row',
@@ -162,18 +168,18 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 2,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 14,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   avatarLargeInitial: {
     fontSize: 30,
     fontWeight: '900',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   titleBox: {
     flex: 1,
@@ -181,13 +187,13 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 11,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 1.2,
   },
   playerName: {
     fontSize: 22,
     fontWeight: '900',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   badgeRow: {
     flexDirection: 'row',
@@ -200,12 +206,12 @@ const styles = StyleSheet.create({
   },
   verifiedText: {
     fontSize: 11,
-    color: DestinyTheme.colors.success,
+    color: ClutchTheme.colors.success,
     fontWeight: '700',
   },
   divider: {
     height: 1.5,
-    backgroundColor: DestinyTheme.colors.cardBorderLight,
+    backgroundColor: ClutchTheme.colors.cardBorderLight,
     marginVertical: 16,
   },
   dataList: {
@@ -218,39 +224,39 @@ const styles = StyleSheet.create({
   },
   dataLabel: {
     fontSize: 13,
-    color: DestinyTheme.colors.textSecondary,
+    color: ClutchTheme.colors.textSecondary,
     fontWeight: '600',
   },
   dataValue: {
     fontSize: 14,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   dataValueBold: {
     fontSize: 14,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   rankPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorder,
+    borderColor: ClutchTheme.colors.cardBorder,
     gap: 4,
   },
   rankPillText: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   teamLink: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   heroesContainer: {
     marginTop: 20,
@@ -258,7 +264,7 @@ const styles = StyleSheet.create({
   heroesHeader: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
     letterSpacing: 0.8,
     marginBottom: 10,
   },
@@ -268,22 +274,22 @@ const styles = StyleSheet.create({
   },
   heroCard: {
     flex: 1,
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
-    borderRadius: DestinyTheme.radius.md,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
+    borderRadius: ClutchTheme.radius.md,
     padding: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: DestinyTheme.colors.cardBorderLight,
+    borderColor: ClutchTheme.colors.cardBorderLight,
   },
   heroName: {
     fontSize: 12,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     marginTop: 4,
   },
   heroStats: {
     fontSize: 10,
-    color: DestinyTheme.colors.textMuted,
+    color: ClutchTheme.colors.textMuted,
     fontWeight: '600',
     marginTop: 2,
   },
@@ -294,28 +300,28 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   viewTeamButton: {
-    backgroundColor: DestinyTheme.colors.backgroundAlt,
+    backgroundColor: ClutchTheme.colors.backgroundAlt,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorder,
-    borderRadius: DestinyTheme.radius.pill,
+    borderColor: ClutchTheme.colors.cardBorder,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 10,
     paddingHorizontal: 18,
   },
   viewTeamButtonText: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   editProfileButton: {
-    backgroundColor: DestinyTheme.colors.primaryDark,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.primaryDark,
+    borderRadius: ClutchTheme.radius.pill,
     paddingVertical: 10,
     paddingHorizontal: 18,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   editProfileButtonText: {
     fontSize: 13,
     fontWeight: '800',
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
   },
 });

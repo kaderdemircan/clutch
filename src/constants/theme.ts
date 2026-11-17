@@ -1,18 +1,18 @@
 import '@/global.css';
 import { Platform } from 'react-native';
 
-export const DestinyTheme = {
+export const ClutchTheme = {
   colors: {
-    // Figma Destiny palette
+    // Clutch visual palette
     background: '#FFEBF3', // Soft pastel blush gaming background
     backgroundAlt: '#FFF5F9',
     card: '#FFFFFF',
-    cardBorder: '#962B2B', // Figma crimson outline
+    cardBorder: '#962B2B', // Crimson outline
     cardBorderLight: 'rgba(150, 43, 43, 0.25)',
-    primary: '#FF5C9D', // Destiny pink
+    primary: '#FF5C9D', // Clutch pink
     primaryDark: '#962B2B', // Deep crimson accent
     primaryLight: '#FFE1ED',
-    secondary: '#0004E4', // Blue link accent from Figma
+    secondary: '#0004E4', // Blue link accent
     text: '#161314',
     textSecondary: '#5A4E54',
     textMuted: '#8C7E85',
@@ -53,11 +53,11 @@ export const DestinyTheme = {
 
 export const Colors = {
   light: {
-    text: DestinyTheme.colors.text,
-    background: DestinyTheme.colors.background,
-    backgroundElement: DestinyTheme.colors.card,
-    backgroundSelected: DestinyTheme.colors.primaryLight,
-    textSecondary: DestinyTheme.colors.textSecondary,
+    text: ClutchTheme.colors.text,
+    background: ClutchTheme.colors.background,
+    backgroundElement: ClutchTheme.colors.card,
+    backgroundSelected: ClutchTheme.colors.primaryLight,
+    textSecondary: ClutchTheme.colors.textSecondary,
   },
   dark: {
     text: '#FFFFFF',

@@ -1,4 +1,4 @@
-# 🎮 DESTINY — Esports Team & Coach Matchmaking Platform
+# 🎮 CLUTCH — Esports Team & Coach Matchmaking Platform
 
 [![Expo](https://img.shields.io/badge/Expo-SDK_58-black.svg?style=flat&logo=expo)](https://expo.dev)
 [![React Native](https://img.shields.io/badge/React_Native-0.88.1-61DAFB.svg?style=flat&logo=react)](https://reactnative.dev)
@@ -7,67 +7,63 @@
 [![Expo Router](https://img.shields.io/badge/Router-Expo_Router_58-000000.svg?style=flat)](https://docs.expo.dev/router/introduction/)
 
 > **"Analyze. Adapt. Dominate."**  
-> Rekabetçi oyuncuların oyun, rank ve rollerine uygun takım arkadaşları bulmasını, takım kurmasını, profesyonel koçlarla antrenman yapmasını ve turnuvalara katılmasını sağlayan yeni nesil mobil espor platformu.
+> A next-generation competitive mobile esports platform designed to help gamers find compatible teammates, build squads, connect with certified coaches, and compete in tournaments based on their exact game, rank, and in-game role.
 
 ---
 
-## 📌 İçindekiler
-- [Proje Özeti ve Amacı](#-proje-özeti-ve-amacı)
-- [Temel Özellikler](#-temel-özellikler)
-- [Figma Tasarımı ve Ekranlar](#-figma-tasarımı-ve-ekranlar)
-- [Tasarım Sistemi (Design Tokens)](#-tasarım-sistemi-design-tokens)
-- [Teknoloji Mimarisi (Tech Stack)](#-teknoloji-mimarisi-tech-stack)
-- [Backend & Veritabanı Mimarisi (Database Schema)](#-backend--veritabanı-mimarisi-database-schema)
-- [Veri Çekme ve Durum Yönetimi (Data Fetching & State)](#-veri-çekme-ve-durum-yönetimi-data-fetching--state)
-- [Proje Dizin Yapısı](#-proje-dizin-yapısı)
-- [Kurulum ve Çalıştırma](#-kurulum-ve-çalıştırma)
-- [Geliştirme Yol Haritası (Roadmap)](#-geliştirme-yol-haritası-roadmap)
+## 📌 Table of Contents
+- [Project Overview & Purpose](#-project-overview--purpose)
+- [Core Features](#-core-features)
+- [Navigation & User Flow](#-navigation--user-flow)
+- [Design System (Design Tokens)](#-design-system-design-tokens)
+- [Technology Architecture (Tech Stack)](#-technology-architecture-tech-stack)
+- [Backend & Database Architecture (PostgreSQL Schema)](#-backend--database-architecture-postgresql-schema)
+- [Data Fetching & State Management](#-data-fetching--state-management)
+- [Project Directory Structure](#-project-directory-structure)
+- [Installation & Getting Started](#-installation--getting-started)
+- [Development Roadmap](#-development-roadmap)
 
 ---
 
-## 🎯 Proje Özeti ve Amacı
+## 🎯 Project Overview & Purpose
 
-Rekabetçi çevrimiçi oyunlarda (özellikle **Mobile Legends: Bang Bang (MLBB)**, Valorant, Wild Rift vb.) oyuncuların karşılaştığı en büyük sorunlardan biri rastgele eşleşmelerde (solo queue) yaşanan uyumsuzluklar, rollerin çakışması ve takım içi iletişim eksikliğidir. 
+In competitive online gaming—especially team-centric titles like **Mobile Legends: Bang Bang (MLBB)**, Valorant, and Wild Rift—players frequently face major hurdles when queuing solo: role overlap, mismatched skill ranks, toxic environments, and a lack of structured communication.
 
-**DESTINY**, bu probleme odaklanarak:
-1. **Rol ve Rank Uyumlu Takım Bulma:** Takımların eksik pozisyonlarına (EXP Lane, Roamer, Jungler vb.) nokta atışı başvuru yapabilmesini sağlar.
-2. **Koçluk Sistemi:** Oyuncuların gelişimlerini hızlandırmak için tecrübeli koçları inceleyip davet edebileceği bir pazar yeri sunar.
-3. **Turnuva Katılımı:** Takımların ödüllü bölgesel turnuvaları listeleyip tek tıkla kaydolmalarını sağlar.
-4. **Oyuncu & İstatistik Kartı:** Oyuncunun ligi, ana rolü, favori kahramanları, win-rate oranı ve son maç performanslarını sergiler.
-
----
-
-## 🌟 Temel Özellikler
-
-- **Dashboard / Ana Sayfa:** Son oynanan maç kartları (KDA, MVP, sonuç), genel galibiyet istatistikleri ve hızlı aksiyonlar.
-- **Find a Team (Takım Bul):** Oyun, Rank, Rol ve Yaş filtreleme çipleri; takım detayları, puanları ve başvuru gönderme.
-- **Find a Coach (Koç Bul):** Koçların uzmanlık alanları, deneyim yılları, seans ücretleri ve rezervasyon daveti.
-- **My Team (Takımım):** 5 oyunculu ana kadro + koç rolleri, takım içi roller ve takımdan ayrılma/yönetim.
-- **Tournaments (Turnuvalar):** Ödül havuzu, katılım şartları, slot doluluğu ve kayıt olma akışı.
-- **Interactive Notifications (Bildirimler):** Takım davetleri, koç yanıtları ve turnuva hatırlatmaları için kategori bazlı bildirim merkezi.
-- **Player Information & Profile:** Kapsamlı maç geçmişi, lig rozetleri ve favori şampiyonlar.
-- **Settings (Ayarlar):** Dil seçimi (TR/EN), Bildirim tercihleri, Koyu Mod (Dark Theme) anahtarı ve Çıkış yapma.
-- **Authentication (Giriş/Kayıt):** Google & Discord sosyal girişleri ve E-posta/Şifre ile kimlik doğrulama.
+**CLUTCH** solves this problem by delivering a dedicated, esports-first ecosystem:
+1. **Role & Rank Matchmaking:** Teams post recruitment listings for exact missing roles (e.g. EXP Lane, Roamer, Jungler), allowing qualified players to apply instantly.
+2. **Coach Marketplace:** Players aiming to climb ranks can browse verified coaches, review past accomplishments, inspect hourly rates, and book training sessions.
+3. **Tournament Registration:** Squads can discover upcoming community and regional tournaments, view prize pools, and register with one tap.
+4. **Player Performance Card:** Displays live competitive stats, rank badges, win-rates, MVP awards, and recent match KDA metrics.
 
 ---
 
-## 📱 Figma Tasarımı ve Ekranlar
+## 🌟 Core Features
 
-Figma'da tasarlanan ekranlar, mobil standartlara ve **Expo Go SDK 58** altyapısına tam uyumlu hale getirilmiştir:
+- **Dashboard / Home:** Recent match history cards (KDA, MVP badge, match outcome), overall performance stats (win rate, total matches), and quick-action navigation.
+- **Find a Team:** Real-time filter chips (Game, Rank, Role, Age), team detail cards, regional rankings, and one-tap application submission.
+- **Find a Coach:** Mentor profiles, specialties, years of coaching experience, session pricing, and direct booking invitations.
+- **My Team:** 5-player starting roster plus coach roles, team management, roster status, and team departure actions.
+- **Tournaments:** Prize pool details, rules, registration slots, schedule dates, and squad entry confirmation.
+- **Interactive Notifications:** Categorized alerts for team invitations, coaching approvals, scrim requests, and tournament check-ins.
+- **Player Profile & Info:** Deep-dive statistical breakdown, champion pool, match history, and profile management.
+- **Settings:** Notifications toggle, Dark Mode switch, privacy permissions, platform guidelines, and logout.
+- **Authentication:** Mock-ready login and registration flow supporting Google Sign-In, Discord Sign-In, and credentials.
+
+---
+
+## 📱 Navigation & User Flow
+
+The application starts on the **Login Screen** and transitions into the protected **4-Tab Navigation** with modal sub-screens:
 
 ```
                   ┌──────────────────────┐
-                  │    Splash Screen     │
+                  │   Login / Register   │  ◄── Initial Entry Screen
                   └──────────┬───────────┘
-                             │
-                  ┌──────────▼───────────┐
-                  │   Login / Register   │
-                  └──────────┬───────────┘
-                             │
+                             │ (Authenticated)
      ┌───────────────────────┴───────────────────────┐
      │                                               │
 ┌────▼─────────────────┐                   ┌─────────▼────────────┐
-│      (tabs)          │                   │     Sub-Screens      │
+│   (tabs) Navigator   │                   │     Sub-Screens      │
 ├──────────────────────┤                   ├──────────────────────┤
 │ 🏠 Home (Dashboard)  │                   │ 🎯 Find Coach        │
 │ 👥 Teams (Team List) │ ◄───────────────► │ 🛡️ My Team           │
@@ -79,61 +75,61 @@ Figma'da tasarlanan ekranlar, mobil standartlara ve **Expo Go SDK 58** altyapıs
 
 ---
 
-## 🎨 Tasarım Sistemi (Design Tokens)
+## 🎨 Design System (Design Tokens)
 
-Tasarım sistemi `src/constants/theme.ts` içerisinde merkezi olarak yönetilir:
+The app utilizes a centralized, retro-modern design system configured in `src/constants/theme.ts`:
 
-| Token | Değer | Kullanım Amacı |
+| Token | Value | Description |
 | :--- | :--- | :--- |
-| **`background`** | `#FFEBF3` | Figma pastel pembe soft oyun zemini |
-| **`card`** | `#FFFFFF` | Konturlu beyaz kart yüzeyi |
-| **`cardBorder`**| `#962B2B` | Koyu kiremit/bordo retro kontur |
-| **`primary`** | `#FF5C9D` | Destiny neon pembe vurgu rengi |
-| **`primaryDark`**| `#962B2B` | Butonlar, başlıklar ve aktif ikonlar |
-| **`primaryLight`**|`#FFE1ED` | Çip arka planları ve aktif sekme kapsayıcısı |
-| **`secondary`** | `#0004E4` | Figma mavi bağlantı/link vurguları |
-| **`success`** | `#10B981` | Galibiyet (VICTORY) ve aktiflik durumu |
-| **`gold`** | `#FFB800` | MVP ve Değerlendirme yıldızları (★★★★★) |
-| **`retroShadow`**| `offset: -3, 4`| Figma tasarımındaki retro yükseltme gölgesi |
+| **`background`** | `#FFEBF3` | Soft pastel gaming background inspired by Figma |
+| **`card`** | `#FFFFFF` | Clean white card surface with outline |
+| **`cardBorder`** | `#962B2B` | Deep crimson brutalist border |
+| **`primary`** | `#FF5C9D` | Vibrant Clutch pink accent |
+| **`primaryDark`** | `#962B2B` | Action buttons, headers, and active indicators |
+| **`primaryLight`** | `#FFE1ED` | Chip backgrounds and active icon capsules |
+| **`secondary`** | `#0004E4` | Interactive link color |
+| **`success`** | `#10B981` | Victory badges and active status indicators |
+| **`gold`** | `#FFB800` | MVP and 5-star rating ornaments |
+| **`retroShadow`** | `offset: -3, 4` | Elevated drop shadow styling |
 
 ---
 
-## 🏗️ Teknoloji Mimarisi (Tech Stack)
+## 🏗️ Technology Architecture (Tech Stack)
 
-### Frontend (Mevcut)
+### Frontend
 - **Framework:** [React Native 0.88.1](https://reactnative.dev)
-- **Platform:** [Expo SDK 58](https://expo.dev) (En güncel sürüm)
-- **Routing:** [Expo Router v58](https://docs.expo.dev/router/introduction/) (Dosya tabanlı Stack & Native Tabs)
-- **Dil:** TypeScript (~6.0)
-- **İkonlar:** `@expo/vector-icons` (Ionicons)
-- **Stil Yönetimi:** React Native `StyleSheet` & Merkezi `DestinyTheme`
-- **Geliştirme Araçları:** ESLint 9 (Strict Hooks), TypeScript Compiler (`tsc`)
+- **Runtime:** [Expo SDK 58](https://expo.dev)
+- **Routing:** [Expo Router v58](https://docs.expo.dev/router/introduction/) (File-based Native Stack & Tabs)
+- **Language:** TypeScript 6.0 (Strict mode)
+- **Iconography:** `@expo/vector-icons` (Ionicons)
+- **Styling:** React Native `StyleSheet` with centralized `ClutchTheme` tokens
+- **Code Quality:** ESLint 9 (Strict React Hooks rules), `tsc` type checking
 
 ---
 
-## 💾 Backend & Veritabanı Mimarisi (Database Schema)
+## 💾 Backend & Database Architecture (PostgreSQL Schema)
 
-Bu projenin eşzamanlı bildirimler, ilişkisel takım yapıları, koçluk randevuları ve kullanıcı kimlik doğrulaması gereksinimleri için en ideal backend çözümü **Supabase (PostgreSQL + Realtime + Auth)**'tur.
+For real-time squad invitations, coach bookings, relational team rosters, and authentication, **Supabase (PostgreSQL + Realtime + Auth)** is the recommended architecture.
 
-### 🌟 Neden Supabase?
-1. **İlişkisel Veri Bütünlüğü (PostgreSQL):** Takım, kadro, oyuncu, koç ve turnuva ilişkileri NoSQL'e kıyasla ilişkisel SQL tablolarında çok daha tutarlı ve hatasız yönetilir.
-2. **Yerleşik Auth & Sosyal Giriş:** Figma tasarımında bulunan **Google** ve **Discord** ile giriş entegrasyonu tek tıkla yapılandırılabilir.
-3. **Realtime WebSockets:** Takım davetleri, maç çağrıları ve koçluk onayları anında (`realtime subscription`) telefona bildirim olarak düşer.
-4. **Row Level Security (RLS):** Kullanıcıların yalnızca kendi takımlarını ve profillerini düzenleyebilmesini sağlayan veri güvenliği kuralları.
+### 🌟 Why Supabase?
+1. **Relational Data Integrity (PostgreSQL):** Players, teams, rosters, applications, and tournaments have strict relational dependencies that benefit from foreign keys and cascade rules.
+2. **Built-in Authentication:** Out-of-the-box support for **Google** and **Discord** OAuth providers matching the login UI.
+3. **Realtime WebSockets:** Instant push updates for team invitations, scrim notifications, and coaching requests without manual polling.
+4. **Row Level Security (RLS):** Granular database-level access policies ensuring users can only edit their own profile and managed teams.
 
 ---
 
-### 📊 Veritabanı Tablo Yapısı (PostgreSQL Schema)
+### 📊 Production Database Schema (PostgreSQL)
 
 ```sql
--- 1. KULLANICI PROFİLLERİ (auth.users tablosunu genişletir)
+-- 1. USER PROFILES (Extends Supabase auth.users)
 CREATE TABLE profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     username VARCHAR(50) UNIQUE NOT NULL,
     display_name VARCHAR(100),
     avatar_url TEXT,
     primary_game VARCHAR(50) DEFAULT 'MLBB',
-    rank VARCHAR(50) DEFAULT 'Mythic',
+    rank VARCHAR(50) DEFAULT 'Mythic Immortal',
     main_role VARCHAR(30) DEFAULT 'EXP Lane',
     total_matches INT DEFAULT 0,
     win_rate NUMERIC(5,2) DEFAULT 0.0,
@@ -144,21 +140,21 @@ CREATE TABLE profiles (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. TAKIMLAR TABLOSU
+-- 2. TEAMS TABLE
 CREATE TABLE teams (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(100) NOT NULL UNIQUE,
     tag VARCHAR(10),
     captain_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
     game VARCHAR(50) NOT NULL DEFAULT 'MLBB',
-    essential_roles TEXT[] NOT NULL, -- örn: ['Roamer', 'Jungler']
+    essential_roles TEXT[] NOT NULL, -- e.g. ['Roamer', 'Jungler']
     rating NUMERIC(2,1) DEFAULT 5.0,
     description TEXT,
     max_members INT DEFAULT 6,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. TAKIM KADROSU (Üyeler ve Rolleri)
+-- 3. TEAM MEMBERS & ROSTER
 CREATE TABLE team_members (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
@@ -169,7 +165,7 @@ CREATE TABLE team_members (
     UNIQUE(team_id, user_id)
 );
 
--- 4. TAKIM BAŞVURULARI VE DAVETLER
+-- 4. TEAM APPLICATIONS & INVITES
 CREATE TABLE team_applications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
@@ -180,7 +176,7 @@ CREATE TABLE team_applications (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 5. KOÇLAR TABLOSU
+-- 5. COACHES TABLE
 CREATE TABLE coaches (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -192,7 +188,7 @@ CREATE TABLE coaches (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. TURNUVALAR TABLOSU
+-- 6. TOURNAMENTS TABLE
 CREATE TABLE tournaments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(150) NOT NULL,
@@ -207,7 +203,7 @@ CREATE TABLE tournaments (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. BİLDİRİMLER TABLOSU
+-- 7. NOTIFICATIONS TABLE
 CREATE TABLE notifications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -217,7 +213,7 @@ CREATE TABLE notifications (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 8. MAÇ GEÇMİŞİ TABLOSU
+-- 8. MATCH HISTORY TABLE
 CREATE TABLE match_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -234,92 +230,96 @@ CREATE TABLE match_history (
 
 ---
 
-## ⚡ Veri Çekme ve Durum Yönetimi (Data Fetching & State)
+## ⚡ Data Fetching & State Management
 
-Projeye veri katmanını bağlarken önerilen endüstri standardı kütüphaneler:
+Recommended client-side data stack:
 
 1. **`@supabase/supabase-js`:**
-   - Kimlik doğrulama (Auth), veritabanı CRUD sorguları ve depolama (avatar yükleme) işlemleri için resmi SDK.
+   - Official client SDK for Auth, database queries, and file storage.
 2. **`@tanstack/react-query` (TanStack Query v5):**
-   - **Önbellekleme (Caching):** Kullanıcı sekmeler arasında gezinirken verileri tekrar tekrar sunucudan çekmeyip anında ekrana basar.
-   - **Optimistic Updates:** Takıma başvurulduğunda veya bildirim okundu işaretlendiğinde sunucu cevabını beklemeden UI anında güncellenir.
-   - **Loading / Error States:** Yüklenme animasyonları (`ActivityIndicator`) ve hata durumları temiz bir şekilde yönetilir.
-3. **`zustand` (İstemci Durum Yönetimi):**
-   - Aktif kullanıcı oturumu (session), seçili tema (Light/Dark) ve anlık filtreler (Game, Rank, Role) için hafif ve performanslı global state kütüphanesi.
+   - **Cache Management:** Instant tab transitions without redundant network requests.
+   - **Optimistic Updates:** Instant UI feedback on team applications or notification dismissal before backend round-trips complete.
+   - **State Handling:** Clean abstractions for `isLoading`, `isError`, and automatic background refetching.
+3. **`zustand` (Lightweight Global State):**
+   - Manages client session state, active game preferences, and search filters.
 
 ---
 
-## 📂 Proje Dizin Yapısı
+## 📂 Project Directory Structure
 
 ```
 clutch/
-├── assets/                  # Görseller, ikonlar ve fontlar
+├── assets/                  # Images, branding icons, and font assets
 ├── src/
-│   ├── app/                 # Expo Router Ekran Rotaları
-│   │   ├── _layout.tsx      # Kök Stack Navigator (Modal & Sub-screen rotaları)
-│   │   ├── (tabs)/          # Alt Sekme Navigasyonu
-│   │   │   ├── _layout.tsx  # Özel Bottom Tab Bar tasarımı
-│   │   │   ├── index.tsx    # 🏠 Home (Dashboard, son maçlar, istatistikler)
-│   │   │   ├── teams.tsx    # 👥 Find a Team (Filtreler, takım kartları)
-│   │   │   ├── tournaments.tsx # 🏆 Tournaments (Turnuva listesi & kayıt)
-│   │   │   └── profile.tsx  # 👤 Profile (Oyuncu kartı & hesap menüsü)
-│   │   ├── find-coach.tsx   # 🎯 Koç Bulma ve Rezervasyon ekranı
-│   │   ├── my-team.tsx      # 🛡️ Takım Kadrosu ve Yönetimi
-│   │   ├── notifications.tsx# 🔔 Bildirim Merkezi (Filtreli)
-│   │   ├── player-info.tsx  # ℹ️ Detaylı Oyuncu İstatistik Kartı
-│   │   ├── settings.tsx     # ⚙️ Ayarlar (Dil, Bildirim, Tema, Çıkış)
-│   │   └── login.tsx        # 🔑 Giriş & Kayıt ekranı (Google/Discord)
-│   ├── components/          # Yeniden Kullanılabilir Bileşenler
-│   │   ├── destiny/
-│   │   │   └── header.tsx   # Ortak Destiny Header (Avatar, Arama, Zil)
-│   │   └── ui/              # Temel UI elemanları
+│   ├── app/                 # Expo Router file-based screens
+│   │   ├── _layout.tsx      # Root Stack Navigator & AuthProvider
+│   │   ├── login.tsx        # 🔑 Initial Login & Register Screen
+│   │   ├── (tabs)/          # Protected Main App Tabs
+│   │   │   ├── _layout.tsx  # Custom Bottom Tab Bar with Redirect guard
+│   │   │   ├── index.tsx    # 🏠 Home / Dashboard
+│   │   │   ├── teams.tsx    # 👥 Find a Team & Applications
+│   │   │   ├── tournaments.tsx # 🏆 Tournaments & Registrations
+│   │   │   └── profile.tsx  # 👤 Player Profile & Account Menu
+│   │   ├── find-coach.tsx   # 🎯 Coach Marketplace
+│   │   ├── my-team.tsx      # 🛡️ Team Roster & Squad Management
+│   │   ├── notifications.tsx# 🔔 Categorized Notification Center
+│   │   ├── player-info.tsx  # ℹ️ Comprehensive Player Stats Card
+│   │   └── settings.tsx     # ⚙️ Settings & Logout Action
+│   ├── components/          # Modular Reusable Components
+│   │   ├── clutch/
+│   │   │   └── header.tsx   # Universal Clutch Header (Avatar, Search, Bell)
+│   │   └── ui/              # Base UI building blocks
 │   ├── constants/
-│   │   └── theme.ts         # Merkezi Renk, Tipografi ve Gölge Token'ları
-│   └── hooks/               # Custom React Hook'ları
-├── AGENTS.md                # Geliştirici ve Agent Kuralları
-├── app.json                 # Expo Yapılandırması
-├── package.json             # Bağımlılıklar ve Komutlar
-├── tsconfig.json            # TypeScript Yapılandırması
-└── README.md                # Proje Belgeleri
+│   │   └── theme.ts         # Centralized ClutchTheme tokens
+│   ├── context/
+│   │   └── auth-context.tsx # Authentication State & Session Context
+│   └── hooks/               # Custom React hooks
+├── AGENTS.md                # Development guidelines
+├── app.json                 # Expo configuration
+├── package.json             # Dependencies and scripts
+├── tsconfig.json            # TypeScript configuration
+└── README.md                # Project documentation
 ```
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+## 🚀 Installation & Getting Started
 
-### 1. Bağımlılıkları Yükleyin
+### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-### 2. Geliştirme Sunucusunu Başlatın
+### 2. Start the Development Server
 ```bash
-# Yerel ağda Expo Go ile çalıştırmak için (Önerilen):
+# Start on local Wi-Fi with cache reset (Recommended):
 npx expo start -c
 
-# Farklı ağlar veya mobil veri için (Tünel modu):
+# Start in tunnel mode (for cellular data or restricted networks):
 npx expo start --tunnel -c
 ```
 
-### 3. Kod Kalitesi ve Tip Kontrolleri
+Scan the terminal QR code with the **Expo Go (SDK 58)** app on your physical mobile device.
+
+### 3. Verify Code Quality & Type Safety
 ```bash
-# TypeScript tip kontrolü:
+# Run TypeScript type check:
 npx tsc --noEmit
 
-# Linter kontrolü:
+# Run ESLint validation:
 npx eslint .
 
-# Expo bağımlılık uyumluluk kontrolü:
+# Run Expo dependency doctor:
 npx expo-doctor
 ```
 
 ---
 
-## 🗺️ Geliştirme Yol Haritası (Roadmap)
+## 🗺️ Development Roadmap
 
-- [x] **Aşama 1: UI & Tasarım Sistemi:** Figma tasarımlarının nizami ve tutarlı olarak React Native/Expo SDK 58'e aktarılması.
-- [x] **Aşama 2: Navigasyon & Ekran Akışları:** Stack ve Tabs ile tüm ekranlar arası yönlendirmelerin tamamlanması.
-- [ ] **Aşama 3: Backend & Database Entegrasyonu:** Supabase projesinin açılması, tabloların oluşturulması ve `@supabase/supabase-js` bağlantısı.
-- [ ] **Aşama 4: Gerçek Kimlik Doğrulama:** Supabase Auth ile E-posta, Google ve Discord girişlerinin canlıya alınması.
-- [ ] **Aşama 5: Canlı Veri Akışı (TanStack Query):** Takım başvuruları, koç davetleri ve turnuva kayıtlarının veritabanına bağlanması.
-- [ ] **Aşama 6: Realtime Bildirimler:** Supabase Realtime ile anlık bildirim iletimi.
+- [x] **Milestone 1: UI & Design Tokens:** Port Figma screens into React Native and Expo SDK 58 using strict mobile patterns.
+- [x] **Milestone 2: Navigation & Flow:** Implement protected Stack and Tabs navigation with an initial Login Screen.
+- [x] **Milestone 3: Complete English Localization:** Clean, 100% English interface across all screens, buttons, and alerts.
+- [ ] **Milestone 4: Supabase Connection:** Initialize cloud project and connect `@supabase/supabase-js`.
+- [ ] **Milestone 5: Production Auth:** Live Google and Discord OAuth token handling.
+- [ ] **Milestone 6: Server State & Realtime:** Connect live team applications, coach bookings, and websocket notifications.

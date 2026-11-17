@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { DestinyTheme } from '@/constants/theme';
+import { ClutchTheme } from '@/constants/theme';
 
-interface DestinyHeaderProps {
+interface ClutchHeaderProps {
   title?: string;
   showBack?: boolean;
   showSearch?: boolean;
@@ -21,7 +21,7 @@ interface DestinyHeaderProps {
   unreadCount?: number;
 }
 
-export function DestinyHeader({
+export function ClutchHeader({
   title = 'PLAYER NAME',
   showBack = false,
   showSearch = true,
@@ -29,7 +29,7 @@ export function DestinyHeader({
   searchValue,
   onSearchChange,
   unreadCount = 3,
-}: DestinyHeaderProps) {
+}: ClutchHeaderProps) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -41,7 +41,7 @@ export function DestinyHeader({
             style={styles.backButton}
             onPress={() => router.back()}
             activeOpacity={0.7}>
-            <Ionicons name="arrow-back" size={20} color={DestinyTheme.colors.text} />
+            <Ionicons name="arrow-back" size={20} color={ClutchTheme.colors.text} />
             <Text style={styles.backButtonText}>Back</Text>
           </TouchableOpacity>
         ) : (
@@ -66,7 +66,7 @@ export function DestinyHeader({
           onPress={() => router.push('/notifications')}
           activeOpacity={0.7}>
           <View style={styles.bellCircle}>
-            <Ionicons name="notifications-outline" size={22} color={DestinyTheme.colors.text} />
+            <Ionicons name="notifications-outline" size={22} color={ClutchTheme.colors.text} />
             {unreadCount > 0 && (
               <View style={styles.unreadBadge}>
                 <Text style={styles.unreadBadgeText}>{unreadCount}</Text>
@@ -83,13 +83,13 @@ export function DestinyHeader({
             <Ionicons
               name="search"
               size={18}
-              color={DestinyTheme.colors.primaryDark}
+              color={ClutchTheme.colors.primaryDark}
               style={styles.searchIcon}
             />
             <TextInput
               style={styles.searchInput}
               placeholder={searchPlaceholder}
-              placeholderTextColor={DestinyTheme.colors.primaryDark}
+              placeholderTextColor={ClutchTheme.colors.primaryDark}
               value={searchValue}
               onChangeText={onSearchChange}
               autoCapitalize="none"
@@ -97,7 +97,7 @@ export function DestinyHeader({
             />
             {searchValue ? (
               <TouchableOpacity onPress={() => onSearchChange?.('')}>
-                <Ionicons name="close-circle" size={18} color={DestinyTheme.colors.textMuted} />
+                <Ionicons name="close-circle" size={18} color={ClutchTheme.colors.textMuted} />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -109,12 +109,12 @@ export function DestinyHeader({
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: DestinyTheme.colors.card,
+    backgroundColor: ClutchTheme.colors.card,
     borderBottomWidth: 1,
-    borderBottomColor: DestinyTheme.colors.cardBorderLight,
+    borderBottomColor: ClutchTheme.colors.cardBorderLight,
     paddingBottom: 12,
     paddingHorizontal: 16,
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   topBar: {
     flexDirection: 'row',
@@ -132,33 +132,33 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     borderWidth: 2,
-    borderColor: DestinyTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
     justifyContent: 'center',
     alignItems: 'center',
-    ...DestinyTheme.shadows.subtle,
+    ...ClutchTheme.shadows.subtle,
   },
   avatarInitial: {
     fontSize: 20,
     fontWeight: '800',
-    color: DestinyTheme.colors.primaryDark,
+    color: ClutchTheme.colors.primaryDark,
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.primaryLight,
+    backgroundColor: ClutchTheme.colors.primaryLight,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: DestinyTheme.radius.pill,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
     gap: 4,
   },
   backButtonText: {
     fontSize: 14,
     fontWeight: '700',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
   titleContainer: {
     flex: 1,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '800',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
     letterSpacing: 1.2,
     textAlign: 'center',
   },
@@ -182,9 +182,9 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: DestinyTheme.colors.card,
+    backgroundColor: ClutchTheme.colors.card,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.cardBorderLight,
+    borderColor: ClutchTheme.colors.cardBorderLight,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -2,
     right: -2,
-    backgroundColor: DestinyTheme.colors.primary,
+    backgroundColor: ClutchTheme.colors.primary,
     borderRadius: 9,
     minWidth: 18,
     height: 18,
@@ -201,10 +201,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 4,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.white,
+    borderColor: ClutchTheme.colors.white,
   },
   unreadBadgeText: {
-    color: DestinyTheme.colors.white,
+    color: ClutchTheme.colors.white,
     fontSize: 10,
     fontWeight: '800',
   },
@@ -214,13 +214,13 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: DestinyTheme.colors.white,
-    borderRadius: DestinyTheme.radius.pill,
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.pill,
     borderWidth: 1.5,
-    borderColor: DestinyTheme.colors.primaryDark,
+    borderColor: ClutchTheme.colors.primaryDark,
     paddingHorizontal: 16,
     height: 44,
-    ...DestinyTheme.shadows.retro,
+    ...ClutchTheme.shadows.retro,
   },
   searchIcon: {
     marginRight: 8,
@@ -229,6 +229,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '500',
-    color: DestinyTheme.colors.text,
+    color: ClutchTheme.colors.text,
   },
 });
