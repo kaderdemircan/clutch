@@ -8,8 +8,12 @@ import { useAuth } from '@/context/auth-context';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const bottomPadding = Math.max(insets.bottom, 10);
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!isAuthenticated) {
     return <Redirect href="/login" />;

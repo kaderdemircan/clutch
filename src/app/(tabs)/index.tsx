@@ -34,6 +34,49 @@ export default function HomeScreen() {
 
   const playerName = user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Player';
 
+  const renderMatchCard = (match: (typeof activeGame.matches)[0], isSingle = false) => (
+    <View
+      key={match.id}
+      style={[styles.matchCard, isSingle && styles.matchCardSingle]}>
+      <View style={styles.matchCardTop}>
+        <Text style={styles.heroName} numberOfLines={1}>
+          {match.heroOrAgent}
+        </Text>
+        {match.isMvp && (
+          <View style={styles.mvpBadge}>
+            <Text style={styles.mvpText}>MVP</Text>
+          </View>
+        )}
+      </View>
+
+      <View
+        style={[
+          styles.resultBadge,
+          match.result === 'DEFEAT' && styles.defeatBadge,
+        ]}>
+        <Text
+          style={[
+            styles.resultText,
+            match.result === 'DEFEAT' && styles.defeatText,
+          ]}>
+          {match.result}
+        </Text>
+      </View>
+
+      <View style={styles.kdaRow}>
+        <Ionicons name="flash" size={13} color={ClutchTheme.colors.primaryDark} />
+        <Text style={styles.kdaText}>{match.kda}</Text>
+      </View>
+
+      <View style={styles.cardBottomRow}>
+        <Text style={styles.roleText}>{match.roleOrPosition}</Text>
+        {match.statExtra && (
+          <Text style={styles.extraStatText}>{match.statExtra}</Text>
+        )}
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ClutchHeader
@@ -83,7 +126,7 @@ export default function HomeScreen() {
           </Text>
         </View>
 
-        {/* Recent Matches Section (Last 5 Matches Analyzed) */}
+        {/* Recent Matches Section (Last 5 Matches Analyzed - 2-2-1 Layout) */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>LAST MATCHES (RECENT ANALYSIS)</Text>
           <View style={styles.sectionBadge}>
@@ -95,46 +138,26 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.matchGrid}>
-          {activeGame.matches.map((match) => (
-            <View key={match.id} style={styles.matchCard}>
-              <View style={styles.matchCardTop}>
-                <Text style={styles.heroName} numberOfLines={1}>
-                  {match.heroOrAgent}
-                </Text>
-                {match.isMvp && (
-                  <View style={styles.mvpBadge}>
-                    <Text style={styles.mvpText}>MVP</Text>
-                  </View>
-                )}
-              </View>
+          {/* Row 1: matches 0 & 1 */}
+          <View style={styles.matchRow}>
+            {activeGame.matches[0] && renderMatchCard(activeGame.matches[0])}
+            {activeGame.matches[1] && renderMatchCard(activeGame.matches[1])}
+          </View>
 
-              <View
-                style={[
-                  styles.resultBadge,
-                  match.result === 'DEFEAT' && styles.defeatBadge,
-                ]}>
-                <Text
-                  style={[
-                    styles.resultText,
-                    match.result === 'DEFEAT' && styles.defeatText,
-                  ]}>
-                  {match.result}
-                </Text>
-              </View>
-
-              <View style={styles.kdaRow}>
-                <Ionicons name="flash" size={13} color={ClutchTheme.colors.primaryDark} />
-                <Text style={styles.kdaText}>{match.kda}</Text>
-              </View>
-
-              <View style={styles.cardBottomRow}>
-                <Text style={styles.roleText}>{match.roleOrPosition}</Text>
-                {match.statExtra && (
-                  <Text style={styles.extraStatText}>{match.statExtra}</Text>
-                )}
-              </View>
+          {/* Row 2: matches 2 & 3 */}
+          {activeGame.matches.length > 2 && (
+            <View style={styles.matchRow}>
+              {activeGame.matches[2] && renderMatchCard(activeGame.matches[2])}
+              {activeGame.matches[3] && renderMatchCard(activeGame.matches[3])}
             </View>
-          ))}
+          )}
+
+          {/* Row 3: 5th match (Centered) */}
+          {activeGame.matches[4] && (
+            <View style={styles.matchRowCentered}>
+              {renderMatchCard(activeGame.matches[4], true)}
+            </View>
+          )}
         </View>
 
         {/* Overall Stats Card */}
@@ -345,19 +368,29 @@ const styles = StyleSheet.create({
     color: ClutchTheme.colors.primaryDark,
   },
   matchGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 10,
     marginBottom: 20,
   },
+  matchRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  matchRowCentered: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   matchCard: {
-    width: '48.5%',
+    flex: 1,
     backgroundColor: ClutchTheme.colors.white,
     borderRadius: ClutchTheme.radius.md,
     padding: 12,
     borderWidth: 1.5,
     borderColor: ClutchTheme.colors.cardBorder,
     ...ClutchTheme.shadows.retro,
+  },
+  matchCardSingle: {
+    flex: 0,
+    width: '48.5%',
   },
   matchCardTop: {
     flexDirection: 'row',

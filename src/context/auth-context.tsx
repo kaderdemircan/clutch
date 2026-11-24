@@ -1,4 +1,7 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
+
+import { supabase } from '@/lib/supabase';
 
 export type SupportedGame = 'mlbb' | 'lol' | 'valorant';
 
@@ -36,14 +39,17 @@ export interface GameAccount {
   };
 }
 
-export const GAME_PRESETS: Record<SupportedGame, {
-  title: string;
-  defaultRank: string;
-  defaultRegion: string;
-  favoriteCharacters: string[];
-  stats: GameAccount['stats'];
-  matches: GameMatch[];
-}> = {
+export const GAME_PRESETS: Record<
+  SupportedGame,
+  {
+    title: string;
+    defaultRank: string;
+    defaultRegion: string;
+    favoriteCharacters: string[];
+    stats: GameAccount['stats'];
+    matches: GameMatch[];
+  }
+> = {
   mlbb: {
     title: 'Mobile Legends: Bang Bang',
     defaultRank: 'Mythic Immortal (124 Stars)',
@@ -115,51 +121,305 @@ export const GAME_PRESETS: Record<SupportedGame, {
   },
 };
 
+export interface AppUser {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl?: string | null;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email?: string) => void;
-  logout: () => void;
-  user: { name: string; email: string } | null;
+  isLoading: boolean;
+  user: AppUser | null;
+  session: Session | null;
   gameAccount: GameAccount | null;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    username?: string
+  ) => Promise<{ error: Error | null; needsEmailConfirmation?: boolean }>;
+  signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: Error | null }>;
   linkGameAccount: (params: {
     game: SupportedGame;
     gameEmail: string;
     gameTag: string;
     region?: string;
-  }) => void;
-  unlinkGameAccount: () => void;
+  }) => Promise<void>;
+  unlinkGameAccount: () => Promise<void>;
+  login: (email?: string) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
+  isLoading: true,
+  user: null,
+  session: null,
+  gameAccount: null,
+  signIn: async () => ({ error: null }),
+  signUp: async () => ({ error: null }),
+  signOut: async () => {},
+  resetPassword: async () => ({ error: null }),
+  linkGameAccount: async () => {},
+  unlinkGameAccount: async () => {},
   login: () => {},
   logout: () => {},
-  user: null,
-  gameAccount: null,
-  linkGameAccount: () => {},
-  unlinkGameAccount: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [gameAccount, setGameAccount] = useState<GameAccount | null>(null);
 
+  // Helper to sync user profile with Supabase PostgreSQL database
+  const syncProfile = async (supabaseUser: SupabaseUser) => {
+    try {
+      const email = supabaseUser.email ?? '';
+      const fallbackName = email ? email.split('@')[0] : 'Player';
+
+      // 1. Fetch profile from public.profiles
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', supabaseUser.id)
+        .maybeSingle();
+
+      if (profile) {
+        setUser({
+          id: supabaseUser.id,
+          name: profile.display_name || profile.username || fallbackName,
+          email,
+          avatarUrl: profile.avatar_url,
+        });
+      } else {
+        // Create profile row if it doesn't exist yet
+        const username =
+          (supabaseUser.user_metadata?.username as string) || fallbackName.toLowerCase();
+        const displayName =
+          (supabaseUser.user_metadata?.display_name as string) || fallbackName;
+
+        await supabase.from('profiles').upsert({
+          id: supabaseUser.id,
+          username,
+          display_name: displayName,
+        });
+
+        setUser({
+          id: supabaseUser.id,
+          name: displayName,
+          email,
+        });
+      }
+
+      // 2. Fetch linked game account from public.game_accounts
+      const { data: dbGameAccount } = await supabase
+        .from('game_accounts')
+        .select('*')
+        .eq('user_id', supabaseUser.id)
+        .maybeSingle();
+
+      if (dbGameAccount) {
+        const gameKey = dbGameAccount.game as SupportedGame;
+        const preset = GAME_PRESETS[gameKey] || GAME_PRESETS.mlbb;
+
+        setGameAccount({
+          game: gameKey,
+          gameTitle: preset.title,
+          gameEmail: dbGameAccount.game_email || email,
+          gameTag: dbGameAccount.game_tag,
+          region: dbGameAccount.region || preset.defaultRegion,
+          rank: dbGameAccount.rank || preset.defaultRank,
+          isVerified: dbGameAccount.is_verified,
+          lastSyncedAt: dbGameAccount.last_synced_at
+            ? new Date(dbGameAccount.last_synced_at).toLocaleDateString()
+            : 'Recently',
+          favoriteCharacters:
+            dbGameAccount.favorite_characters && dbGameAccount.favorite_characters.length > 0
+              ? dbGameAccount.favorite_characters
+              : preset.favoriteCharacters,
+          matches: preset.matches,
+          stats:
+            dbGameAccount.stats && Object.keys(dbGameAccount.stats).length > 0
+              ? (dbGameAccount.stats as any)
+              : preset.stats,
+        });
+      }
+    } catch (err) {
+      console.warn('Profile synchronization error:', err);
+      // Fallback local user
+      setUser({
+        id: supabaseUser.id,
+        name: supabaseUser.email ? supabaseUser.email.split('@')[0] : 'Player',
+        email: supabaseUser.email ?? 'player@clutch.gg',
+      });
+    }
+  };
+
+  // Restore session on app launch
+  useEffect(() => {
+    let isMounted = true;
+
+    async function restoreSession() {
+      try {
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        if (error) {
+          console.warn('Supabase getSession error:', error.message);
+        }
+
+        if (initialSession?.user && isMounted) {
+          setSession(initialSession);
+          setIsAuthenticated(true);
+          await syncProfile(initialSession.user);
+        }
+      } catch (err) {
+        console.warn('Failed to restore session:', err);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    restoreSession();
+
+    // Listen for auth state changes (sign in, sign out, token refresh)
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, newSession) => {
+        if (!isMounted) return;
+
+        setSession(newSession);
+
+        if (newSession?.user) {
+          setIsAuthenticated(true);
+          await syncProfile(newSession.user);
+        } else if (event === 'SIGNED_OUT') {
+          setIsAuthenticated(false);
+          setUser(null);
+          setGameAccount(null);
+        }
+
+        setIsLoading(false);
+      }
+    );
+
+    return () => {
+      isMounted = false;
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  // Real Email & Password Sign In
+  const signIn = async (email: string, password: string): Promise<{ error: Error | null }> => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (error) {
+        return { error: new Error(error.message) };
+      }
+
+      if (data.session && data.user) {
+        setSession(data.session);
+        setIsAuthenticated(true);
+        await syncProfile(data.user);
+      }
+
+      return { error: null };
+    } catch (err: any) {
+      return { error: new Error(err?.message || 'Login failed') };
+    }
+  };
+
+  // Real User Registration
+  const signUp = async (
+    email: string,
+    password: string,
+    username?: string
+  ): Promise<{ error: Error | null; needsEmailConfirmation?: boolean }> => {
+    try {
+      const trimmedEmail = email.trim();
+      const autoUsername = username?.trim() || trimmedEmail.split('@')[0];
+
+      const { data, error } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password,
+        options: {
+          data: {
+            username: autoUsername,
+            display_name: autoUsername,
+          },
+        },
+      });
+
+      if (error) {
+        return { error: new Error(error.message), needsEmailConfirmation: false };
+      }
+
+      const needsConfirmation = !data.session;
+
+      if (data.session && data.user) {
+        setSession(data.session);
+        setIsAuthenticated(true);
+        await syncProfile(data.user);
+      }
+
+      return { error: null, needsEmailConfirmation: needsConfirmation };
+    } catch (err: any) {
+      return { error: new Error(err?.message || 'Registration failed'), needsEmailConfirmation: false };
+    }
+  };
+
+  // Real Sign Out
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.warn('Supabase signOut error:', err);
+    } finally {
+      setSession(null);
+      setUser(null);
+      setGameAccount(null);
+      setIsAuthenticated(false);
+    }
+  };
+
+  // Real Password Reset
+  const resetPassword = async (email: string): Promise<{ error: Error | null }> => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim());
+      if (error) {
+        return { error: new Error(error.message) };
+      }
+      return { error: null };
+    } catch (err: any) {
+      return { error: new Error(err?.message || 'Password reset failed') };
+    }
+  };
+
+  // Legacy/Demo login helper for backwards compatibility
   const login = (email?: string) => {
+    const defaultEmail = email || 'player@clutch.gg';
     setUser({
-      name: email ? email.split('@')[0] : 'Player',
-      email: email || 'player@clutch.gg',
+      id: 'demo-user-id',
+      name: defaultEmail.split('@')[0],
+      email: defaultEmail,
     });
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    setUser(null);
-    setGameAccount(null);
-    setIsAuthenticated(false);
+    signOut();
   };
 
-  const linkGameAccount = ({
+  // Game account linking (updates state + persists to PostgreSQL)
+  const linkGameAccount = async ({
     game,
     gameEmail,
     gameTag,
@@ -171,35 +431,77 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     region?: string;
   }) => {
     const preset = GAME_PRESETS[game];
-    setGameAccount({
+    const formattedTag = gameTag || `${user?.name || 'Player'}#${game.toUpperCase()}`;
+    const formattedRegion = region || preset.defaultRegion;
+
+    const newAccount: GameAccount = {
       game,
       gameTitle: preset.title,
       gameEmail,
-      gameTag: gameTag || `${user?.name || 'Player'}#${game.toUpperCase()}`,
-      region: region || preset.defaultRegion,
+      gameTag: formattedTag,
+      region: formattedRegion,
       rank: preset.defaultRank,
       isVerified: true,
       lastSyncedAt: 'Just now',
       favoriteCharacters: preset.favoriteCharacters,
       matches: preset.matches,
       stats: preset.stats,
-    });
+    };
+
+    setGameAccount(newAccount);
+
+    // Persist to Supabase if user is logged in
+    if (user?.id && user.id !== 'demo-user-id') {
+      try {
+        await supabase.from('game_accounts').upsert({
+          user_id: user.id,
+          game,
+          game_tag: formattedTag,
+          game_email: gameEmail,
+          region: formattedRegion,
+          rank: preset.defaultRank,
+          is_verified: true,
+          last_synced_at: new Date().toISOString(),
+          favorite_characters: preset.favoriteCharacters,
+          stats: preset.stats as any,
+        });
+      } catch (err) {
+        console.warn('Could not persist game account to Supabase:', err);
+      }
+    }
   };
 
-  const unlinkGameAccount = () => {
+  const unlinkGameAccount = async () => {
     setGameAccount(null);
+    if (user?.id && user.id !== 'demo-user-id' && gameAccount) {
+      try {
+        await supabase
+          .from('game_accounts')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('game', gameAccount.game);
+      } catch (err) {
+        console.warn('Could not remove game account from Supabase:', err);
+      }
+    }
   };
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        login,
-        logout,
+        isLoading,
         user,
+        session,
         gameAccount,
+        signIn,
+        signUp,
+        signOut,
+        resetPassword,
         linkGameAccount,
         unlinkGameAccount,
+        login,
+        logout,
       }}>
       {children}
     </AuthContext.Provider>

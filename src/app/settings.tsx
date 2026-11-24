@@ -16,7 +16,7 @@ import { ClutchTheme } from '@/constants/theme';
 import { useAuth } from '@/context/auth-context';
 
 export default function SettingsScreen() {
-  const { logout } = useAuth();
+  const { logout, signOut } = useAuth();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
@@ -29,8 +29,16 @@ export default function SettingsScreen() {
         {
           text: 'Log Out',
           style: 'destructive',
-          onPress: () => {
-            logout();
+          onPress: async () => {
+            try {
+              if (signOut) {
+                await signOut();
+              } else {
+                logout();
+              }
+            } catch (err) {
+              console.warn('Logout error:', err);
+            }
             router.replace('/login');
           },
         },
