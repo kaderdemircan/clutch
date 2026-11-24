@@ -11,32 +11,35 @@ import {
 
 import { ClutchHeader } from '@/components/clutch/header';
 import { ClutchTheme } from '@/constants/theme';
-
-interface MatchData {
-  id: string;
-  hero: string;
-  result: 'VICTORY' | 'DEFEAT';
-  kda: string;
-  role: string;
-  isMvp?: boolean;
-}
-
-const RECENT_MATCHES: MatchData[] = [
-  { id: '1', hero: 'Benedetta', result: 'VICTORY', kda: '24 / 3 / 4', role: 'EXP Lane', isMvp: true },
-  { id: '2', hero: 'Benedetta', result: 'VICTORY', kda: '18 / 2 / 6', role: 'EXP Lane', isMvp: true },
-  { id: '3', hero: 'Benedetta', result: 'VICTORY', kda: '21 / 4 / 5', role: 'EXP Lane', isMvp: false },
-  { id: '4', hero: 'Benedetta', result: 'VICTORY', kda: '16 / 1 / 8', role: 'EXP Lane', isMvp: false },
-];
+import { GAME_PRESETS, useAuth } from '@/context/auth-context';
 
 export default function HomeScreen() {
   const [search, setSearch] = useState('');
+  const { user, gameAccount } = useAuth();
+
+  // Use linked account or default to MLBB preset
+  const activeGame = gameAccount || {
+    game: 'mlbb' as const,
+    gameTitle: GAME_PRESETS.mlbb.title,
+    gameEmail: user?.email || 'player@clutch.gg',
+    gameTag: `${user?.name || 'Kader'}#MLBB`,
+    region: GAME_PRESETS.mlbb.defaultRegion,
+    rank: GAME_PRESETS.mlbb.defaultRank,
+    isVerified: true,
+    lastSyncedAt: 'Just now',
+    favoriteCharacters: GAME_PRESETS.mlbb.favoriteCharacters,
+    matches: GAME_PRESETS.mlbb.matches,
+    stats: GAME_PRESETS.mlbb.stats,
+  };
+
+  const playerName = user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Player';
 
   return (
     <View style={styles.container}>
       <ClutchHeader
-        title="PLAYER NAME"
+        title={playerName.toUpperCase()}
         showSearch={true}
-        searchPlaceholder="Search heroes, players, teams..."
+        searchPlaceholder={`Search ${activeGame.gameTitle} heroes, teammates...`}
         searchValue={search}
         onSearchChange={setSearch}
         unreadCount={3}
@@ -45,29 +48,59 @@ export default function HomeScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
+        {/* Game Account Link / Sync Bar */}
+        <TouchableOpacity
+          style={styles.linkedAccountBar}
+          onPress={() => router.push('/connect-game')}
+          activeOpacity={0.8}>
+          <View style={styles.linkedLeft}>
+            <View style={styles.onlineDot} />
+            <View>
+              <Text style={styles.linkedTitle}>
+                {activeGame.gameTitle} • <Text style={styles.linkedTag}>{activeGame.gameTag}</Text>
+              </Text>
+              <Text style={styles.linkedSubtitle}>
+                Account Verified • Last 5 Matches Synced
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.switchGameBtn}>
+            <Text style={styles.switchGameText}>Switch / Re-sync</Text>
+            <Ionicons name="refresh" size={14} color={ClutchTheme.colors.primaryDark} />
+          </View>
+        </TouchableOpacity>
+
         {/* Game Banner */}
         <View style={styles.gameBanner}>
           <View style={styles.gameBadge}>
             <Text style={styles.gameBadgeDot}>●</Text>
-            <Text style={styles.gameBadgeText}>RECENTLY PLAYED</Text>
+            <Text style={styles.gameBadgeText}>LIVE GAME DATA</Text>
           </View>
-          <Text style={styles.gameTitle}>Mobile Legends: Bang Bang</Text>
-          <Text style={styles.gameSubtitle}>Rank: Mythic Immortal • Global Server</Text>
+          <Text style={styles.gameTitle}>{activeGame.gameTitle}</Text>
+          <Text style={styles.gameSubtitle}>
+            Rank: {activeGame.rank} • Region: {activeGame.region}
+          </Text>
         </View>
 
-        {/* Last Four Matches Section */}
+        {/* Recent Matches Section (Last 5 Matches Analyzed) */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>LAST FOUR MATCH</Text>
+          <Text style={styles.sectionTitle}>LAST MATCHES (RECENT ANALYSIS)</Text>
           <View style={styles.sectionBadge}>
-            <Text style={styles.sectionBadgeText}>4W - 0L (100%)</Text>
+            <Text style={styles.sectionBadgeText}>
+              {activeGame.matches.filter((m) => m.result === 'VICTORY').length}W -{' '}
+              {activeGame.matches.filter((m) => m.result === 'DEFEAT').length}L
+            </Text>
           </View>
         </View>
 
         <View style={styles.matchGrid}>
-          {RECENT_MATCHES.map((match) => (
+          {activeGame.matches.map((match) => (
             <View key={match.id} style={styles.matchCard}>
               <View style={styles.matchCardTop}>
-                <Text style={styles.heroName}>{match.hero}</Text>
+                <Text style={styles.heroName} numberOfLines={1}>
+                  {match.heroOrAgent}
+                </Text>
                 {match.isMvp && (
                   <View style={styles.mvpBadge}>
                     <Text style={styles.mvpText}>MVP</Text>
@@ -75,8 +108,18 @@ export default function HomeScreen() {
                 )}
               </View>
 
-              <View style={styles.resultBadge}>
-                <Text style={styles.resultText}>{match.result}</Text>
+              <View
+                style={[
+                  styles.resultBadge,
+                  match.result === 'DEFEAT' && styles.defeatBadge,
+                ]}>
+                <Text
+                  style={[
+                    styles.resultText,
+                    match.result === 'DEFEAT' && styles.defeatText,
+                  ]}>
+                  {match.result}
+                </Text>
               </View>
 
               <View style={styles.kdaRow}>
@@ -84,7 +127,12 @@ export default function HomeScreen() {
                 <Text style={styles.kdaText}>{match.kda}</Text>
               </View>
 
-              <Text style={styles.roleText}>{match.role}</Text>
+              <View style={styles.cardBottomRow}>
+                <Text style={styles.roleText}>{match.roleOrPosition}</Text>
+                {match.statExtra && (
+                  <Text style={styles.extraStatText}>{match.statExtra}</Text>
+                )}
+              </View>
             </View>
           ))}
         </View>
@@ -94,19 +142,19 @@ export default function HomeScreen() {
           <View style={styles.statsLeft}>
             <View style={styles.statRow}>
               <Text style={styles.statLabel}>Kill Avg:</Text>
-              <Text style={styles.statValue}>19.8</Text>
+              <Text style={styles.statValue}>{activeGame.stats.killAvg}</Text>
             </View>
             <View style={styles.statRow}>
               <Text style={styles.statLabel}>Death Avg:</Text>
-              <Text style={styles.statValue}>2.5</Text>
+              <Text style={styles.statValue}>{activeGame.stats.deathAvg}</Text>
             </View>
             <View style={styles.statRow}>
               <Text style={styles.statLabel}>Assist Avg:</Text>
-              <Text style={styles.statValue}>5.8</Text>
+              <Text style={styles.statValue}>{activeGame.stats.assistAvg}</Text>
             </View>
             <View style={styles.statRow}>
-              <Text style={styles.statLabel}>Push Rate:</Text>
-              <Text style={styles.statValue}>74%</Text>
+              <Text style={styles.statLabel}>{activeGame.stats.secondaryMetricLabel}:</Text>
+              <Text style={styles.statValue}>{activeGame.stats.secondaryMetricValue}</Text>
             </View>
           </View>
 
@@ -115,16 +163,16 @@ export default function HomeScreen() {
           <View style={styles.statsRight}>
             <Text style={styles.overallStatsTitle}>OVERALL STATS</Text>
             <View style={styles.statHighlightBadge}>
-              <Text style={styles.statHighlightValue}>64%</Text>
+              <Text style={styles.statHighlightValue}>{activeGame.stats.winRate}</Text>
               <Text style={styles.statHighlightLabel}>WIN RATE</Text>
             </View>
             <View style={styles.subStatsRow}>
               <View style={styles.miniStat}>
-                <Text style={styles.miniStatNum}>218</Text>
+                <Text style={styles.miniStatNum}>{activeGame.stats.totalMatches}</Text>
                 <Text style={styles.miniStatLabel}>Matches</Text>
               </View>
               <View style={styles.miniStat}>
-                <Text style={styles.miniStatNum}>32</Text>
+                <Text style={styles.miniStatNum}>{activeGame.stats.mvpCount}</Text>
                 <Text style={styles.miniStatLabel}>MVP</Text>
               </View>
             </View>
@@ -180,6 +228,61 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 32,
   },
+  linkedAccountBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: ClutchTheme.colors.white,
+    borderRadius: ClutchTheme.radius.md,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderWidth: 1.5,
+    borderColor: ClutchTheme.colors.cardBorder,
+    marginBottom: 14,
+    ...ClutchTheme.shadows.subtle,
+  },
+  linkedLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+  },
+  onlineDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: ClutchTheme.colors.success,
+  },
+  linkedTitle: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: ClutchTheme.colors.text,
+  },
+  linkedTag: {
+    color: ClutchTheme.colors.primaryDark,
+  },
+  linkedSubtitle: {
+    fontSize: 10,
+    color: ClutchTheme.colors.textMuted,
+    fontWeight: '600',
+    marginTop: 1,
+  },
+  switchGameBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: ClutchTheme.colors.primaryLight,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: ClutchTheme.radius.pill,
+    borderWidth: 1,
+    borderColor: ClutchTheme.colors.cardBorderLight,
+  },
+  switchGameText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: ClutchTheme.colors.primaryDark,
+  },
   gameBanner: {
     backgroundColor: ClutchTheme.colors.card,
     borderRadius: ClutchTheme.radius.lg,
@@ -223,10 +326,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '800',
     color: ClutchTheme.colors.primaryDark,
-    letterSpacing: 1.2,
+    letterSpacing: 1,
   },
   sectionBadge: {
     backgroundColor: ClutchTheme.colors.primaryLight,
@@ -244,11 +347,11 @@ const styles = StyleSheet.create({
   matchGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    gap: 10,
     marginBottom: 20,
   },
   matchCard: {
-    width: '48%',
+    width: '48.5%',
     backgroundColor: ClutchTheme.colors.white,
     borderRadius: ClutchTheme.radius.md,
     padding: 12,
@@ -266,12 +369,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '800',
     color: ClutchTheme.colors.text,
+    flex: 1,
   },
   mvpBadge: {
     backgroundColor: ClutchTheme.colors.gold,
-    paddingHorizontal: 6,
+    paddingHorizontal: 5,
     paddingVertical: 2,
-    borderRadius: 6,
+    borderRadius: 4,
+    marginLeft: 4,
   },
   mvpText: {
     color: ClutchTheme.colors.white,
@@ -286,10 +391,16 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 6,
   },
+  defeatBadge: {
+    backgroundColor: '#FEE2E2',
+  },
   resultText: {
     color: ClutchTheme.colors.success,
     fontSize: 11,
     fontWeight: '800',
+  },
+  defeatText: {
+    color: ClutchTheme.colors.danger,
   },
   kdaRow: {
     flexDirection: 'row',
@@ -302,10 +413,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: ClutchTheme.colors.text,
   },
+  cardBottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   roleText: {
     fontSize: 11,
     fontWeight: '600',
     color: ClutchTheme.colors.textMuted,
+  },
+  extraStatText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: ClutchTheme.colors.primaryDark,
   },
   statsCard: {
     flexDirection: 'row',

@@ -26,7 +26,7 @@ export default function LoginScreen() {
     // Allows demo bypass with random input or empty input
     const userEmail = email.trim() || 'player@clutch.gg';
     login(userEmail);
-    router.replace('/(tabs)' as any);
+    router.replace('/connect-game' as any);
   };
 
   const handleSocialLogin = (provider: 'Google' | 'Discord') => {
@@ -38,7 +38,7 @@ export default function LoginScreen() {
           text: 'Continue',
           onPress: () => {
             login(`${provider.toLowerCase()}_player@clutch.gg`);
-            router.replace('/(tabs)' as any);
+            router.replace('/connect-game' as any);
           },
         },
       ]

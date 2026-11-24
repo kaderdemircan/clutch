@@ -10,13 +10,34 @@ import {
 
 import { ClutchHeader } from '@/components/clutch/header';
 import { ClutchTheme } from '@/constants/theme';
-import { useAuth } from '@/context/auth-context';
+import { GAME_PRESETS, useAuth } from '@/context/auth-context';
 
 export default function ProfileScreen() {
-  const { user } = useAuth();
+  const { user, gameAccount } = useAuth();
   const displayName = user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Kader';
 
+  const activeGame = gameAccount || {
+    game: 'mlbb' as const,
+    gameTitle: GAME_PRESETS.mlbb.title,
+    gameEmail: user?.email || 'player@clutch.gg',
+    gameTag: `${user?.name || 'Kader'}#MLBB`,
+    region: GAME_PRESETS.mlbb.defaultRegion,
+    rank: GAME_PRESETS.mlbb.defaultRank,
+    isVerified: true,
+    lastSyncedAt: 'Just now',
+    favoriteCharacters: GAME_PRESETS.mlbb.favoriteCharacters,
+    matches: GAME_PRESETS.mlbb.matches,
+    stats: GAME_PRESETS.mlbb.stats,
+  };
+
   const menuItems = [
+    {
+      id: 'game-account',
+      title: 'Connected Game Account',
+      subtitle: `${activeGame.gameTitle} (${activeGame.gameTag})`,
+      icon: 'game-controller-outline',
+      onPress: () => router.push('/connect-game'),
+    },
     {
       id: 'edit',
       title: 'Edit Profile',
@@ -26,8 +47,8 @@ export default function ProfileScreen() {
     },
     {
       id: 'history',
-      title: 'Match History',
-      subtitle: 'View detailed performance breakdown',
+      title: 'Match History & Analytics',
+      subtitle: `View last ${activeGame.matches.length} matches analysis`,
       icon: 'time-outline',
       onPress: () => router.push('/player-info'),
     },
@@ -83,39 +104,43 @@ export default function ProfileScreen() {
               <View style={styles.nameRow}>
                 <Text style={styles.playerName}>{displayName}</Text>
                 <View style={styles.rankBadge}>
-                  <Text style={styles.rankBadgeText}>MYTHIC IMMORTAL</Text>
+                  <Text style={styles.rankBadgeText}>{activeGame.rank.toUpperCase()}</Text>
                 </View>
               </View>
-              <Text style={styles.gameDetailText}>Game: MLBB • Main Role: EXP Lane</Text>
-              <Text style={styles.teamBadgeText}>Team: TEAM PHOENIX (Captain)</Text>
+              <Text style={styles.gameDetailText}>
+                {activeGame.gameTitle} • {activeGame.region}
+              </Text>
+              <Text style={styles.teamBadgeText}>Tag: {activeGame.gameTag}</Text>
             </View>
           </View>
 
           {/* Stats Bar */}
           <View style={styles.statsBar}>
             <View style={styles.statCol}>
-              <Text style={styles.statNumber}>438</Text>
+              <Text style={styles.statNumber}>{activeGame.stats.totalMatches}</Text>
               <Text style={styles.statCaption}>Matches</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statCol}>
               <Text style={[styles.statNumber, { color: ClutchTheme.colors.primaryDark }]}>
-                61%
+                {activeGame.stats.winRate}
               </Text>
               <Text style={styles.statCaption}>Win Rate</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statCol}>
-              <Text style={[styles.statNumber, { color: ClutchTheme.colors.gold }]}>92</Text>
+              <Text style={[styles.statNumber, { color: ClutchTheme.colors.gold }]}>
+                {activeGame.stats.mvpCount}
+              </Text>
               <Text style={styles.statCaption}>MVP Award</Text>
             </View>
           </View>
 
-          {/* Favorite Heroes */}
+          {/* Favorite Heroes / Agents */}
           <View style={styles.heroesSection}>
-            <Text style={styles.heroesTitle}>Favorite Heroes:</Text>
+            <Text style={styles.heroesTitle}>Favorite Champions / Heroes:</Text>
             <View style={styles.heroChipsRow}>
-              {['Benedetta', 'Chou', 'Paquito'].map((hero) => (
+              {activeGame.favoriteCharacters.map((hero) => (
                 <View key={hero} style={styles.heroChip}>
                   <Ionicons name="shield-checkmark" size={12} color={ClutchTheme.colors.primaryDark} />
                   <Text style={styles.heroChipText}>{hero}</Text>
@@ -128,16 +153,16 @@ export default function ProfileScreen() {
           <View style={styles.cardActionsRow}>
             <TouchableOpacity
               style={styles.cardSecondaryBtn}
-              onPress={() => router.push('/my-team')}
+              onPress={() => router.push('/connect-game')}
               activeOpacity={0.7}>
-              <Text style={styles.cardSecondaryBtnText}>View Team →</Text>
+              <Text style={styles.cardSecondaryBtnText}>Re-link Game 🔄</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.cardPrimaryBtn}
               onPress={() => router.push('/player-info')}
               activeOpacity={0.8}>
-              <Text style={styles.cardPrimaryBtnText}>Full Info →</Text>
+              <Text style={styles.cardPrimaryBtnText}>Full Stats →</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -321,7 +346,7 @@ const styles = StyleSheet.create({
   },
   cardSecondaryBtn: {
     paddingVertical: 9,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     borderRadius: ClutchTheme.radius.pill,
     backgroundColor: ClutchTheme.colors.backgroundAlt,
     borderWidth: 1,
